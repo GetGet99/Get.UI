@@ -23,6 +23,23 @@ public partial class TabView : Control
         DefaultStyleKey = typeof(TabView);
         ConnectionContext = new();
     }
+    T GetTemplateChild<T>(string name) where T : DependencyObject => (T)GetTemplateChild(name);
+    ContentPresenter? ContentPresenter => GetTemplateChild<ContentPresenter>(nameof(ContentPresenter));
+    ContentPresenter? ToolbarPresenter => GetTemplateChild<ContentPresenter>(nameof(ToolbarPresenter));
+
+    partial void OnPrimarySelectedItemChanged(object oldValue, object newValue)
+    {
+        if (ContentPresenter != null && ToolbarPresenter != null)
+            ContentPresenter.Visibility = ToolbarPresenter.Visibility
+                = newValue is null ? Visibility.Collapsed : Visibility.Visible;
+    }
+    protected override void OnApplyTemplate()
+    {
+        var newValue = PrimarySelectedItem;
+        ContentPresenter.Visibility = ToolbarPresenter.Visibility
+            = newValue is null ? Visibility.Collapsed : Visibility.Visible;
+        base.OnApplyTemplate();
+    }
 }
 public enum TabAlignment
 {

@@ -28,13 +28,15 @@
                             
                         </ScrollViewer>-->
                         <ctns:MotionDragSelectableContainer
-                                ItemsSource="{TemplateBinding ItemsSource}"
-                                ItemTemplate="{TemplateBinding ItemTemplate}"
-                                PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                ReorderOrientation="{TemplateBinding Orientation}"
-                                ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                VerticalAlignment="Center"
-                            >
+                            MinWidth="100"
+                            Height="{TemplateBinding Height}"
+                            ItemsSource="{TemplateBinding ItemsSource}"
+                            ItemTemplate="{TemplateBinding ItemTemplate}"
+                            PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            ReorderOrientation="{TemplateBinding Orientation}"
+                            ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            VerticalAlignment="Center"
+                        >
                         </ctns:MotionDragSelectableContainer>
                     </guis:HeaderFooterContent>
                 </ControlTemplate>

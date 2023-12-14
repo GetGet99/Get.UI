@@ -18,8 +18,11 @@ partial class MotionDragContainer
     Rect itemRect;
     int ItemDragIndex = -1;
     object? DraggingObject;
+    bool isCanceled = false;
+
     internal void MotionDragItemManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
     {
+        isCanceled = false;
         if (sender is not UIElement ele) return;
         Display.Width = ele.ActualSize.X;
         Display.Height = ele.ActualSize.Y;
@@ -50,6 +53,19 @@ partial class MotionDragContainer
     bool set;
     internal void MotionDragItemManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
+        if (isCanceled) return;
+        if (WinWrapper.Input.Keyboard.IsKeyDown(WinWrapper.Input.VirtualKey.ESCAPE))
+        {
+            isCanceled = true;
+            Popup.IsOpen = false;
+            if (sender is UIElement ele)
+            {
+                var eleVisual = ElementCompositionPreview.GetElementVisual(ele);
+                eleVisual.IsVisible = true;
+            }
+            AnimationController.Reset();
+            return;
+        }
         DragPosition dp = new(GlobalRectangle, itemRect, initmousePos, e.Cumulative.Translation);
         if (!set)
         {
@@ -86,6 +102,11 @@ partial class MotionDragContainer
 
     internal async void MotionDragItemManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
     {
+        if (isCanceled)
+        {
+            isCanceled = false;
+            return;
+        }
         var dropManager = new DropManager();
         ConnectionContext?.DropEvent(this, DraggingObject, new(GlobalRectangle, itemRect, initmousePos, e.Cumulative.Translation), dropManager);
         await dropManager.WaitForDeferralAsync();

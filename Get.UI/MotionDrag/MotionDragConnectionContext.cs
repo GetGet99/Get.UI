@@ -41,7 +41,7 @@ public class MotionDragConnectionContext
                 itemOffset += _offset.AsVector3();
             } else
             {
-                CurrentReceiver.DragLeave(sender, item, dragPosition);
+                CurrentReceiver.DragLeave(sender, item);
                 CurrentReceiver = null;
                 DragEvent(sender, item, dragPosition, ref itemOffset);
             }
@@ -53,6 +53,11 @@ public class MotionDragConnectionContext
             CurrentReceiver.Drop(sender, item, dragPosition, dropManager);
         else
             DroppedOutside?.Invoke(sender, item, dragPosition, dropManager);
+    }
+    internal void CancelDragEvent(object? sender, object? item)
+    {
+        CurrentReceiver?.DragLeave(sender, item);
+        CurrentReceiver = null;
     }
     public static void UnsafeAdd(MotionDragConnectionContext reference, IMotionDragConnectionReceiver receiver)
         => reference.Add(receiver);

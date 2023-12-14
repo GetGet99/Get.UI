@@ -7,6 +7,6 @@ public interface IMotionDragConnectionReceiver
     bool IsVisibleAt(Point pt);
     void DragEnter(object? sender, object? item, DragPosition dragPosition, ref Point itemOffset);
     void DragDelta(object? sender, object? item, DragPosition dragPosition, ref Point itemOffset);
-    void DragLeave(object? sender, object? item, DragPosition dragPosition);
+    void DragLeave(object? sender, object? item);
     void Drop(object? sender, object? item, DragPosition dragPosition, DropManager dropManager);
 }

@@ -19,7 +19,6 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
     GlobalContainerRect _globalRectangle;
     GlobalContainerRect GlobalRectangle => useCached ? _globalRectangle : GlobalContainerRect.GetFromContainer(this);
     GlobalContainerRect IMotionDragConnectionReceiver.GlobalRectangle => GlobalRectangle;
-
     void IMotionDragConnectionReceiver.DragEnter(object? sender, object? item, DragPosition dragPositionIn, ref Point itemOffset)
     {
         if (!ReferenceEquals(sender, this))
@@ -42,7 +41,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
     void IMotionDragConnectionReceiver.DragDelta(object? sender, object? item, DragPosition dragPosition, ref Point itemOffset)
         => DragDelta(sender, item, dragPosition, ref itemOffset);
 
-    void IMotionDragConnectionReceiver.DragLeave(object? sender, object? item, DragPosition dragPosition)
+    void IMotionDragConnectionReceiver.DragLeave(object? sender, object? item)
     {
         AnimationController.StartShiftIndex = ItemsCount;
     }

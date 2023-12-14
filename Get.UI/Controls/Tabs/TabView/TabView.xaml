@@ -33,8 +33,8 @@
                         >
                             
                         </tabs:TabContainer>
-                        <ContentPresenter Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ToolbarTemplate}" Grid.Row="1"/>
-                        <ContentPresenter Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Row="2"/>
+                        <ContentPresenter x:Name="ToolbarPresenter" Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ToolbarTemplate}" Grid.Row="1"/>
+                        <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Row="2"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
