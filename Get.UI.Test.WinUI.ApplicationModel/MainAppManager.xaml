@@ -1,0 +1,39 @@
+﻿<local:TypedAppManager
+    x:Class="Get.UI.Test.WinUI.ApplicationModel.MainAppManager"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Get.UI.Test.WinUI.ApplicationModel"
+    xmlns:tabbed="using:Get.UI.ApplicationModel.Tabbed"
+    xmlns:tabs="using:Get.UI.Controls.Tabs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+>
+    <local:TypedAppManager.SystemBackdrop>
+        <MicaBackdrop/>
+    </local:TypedAppManager.SystemBackdrop>
+    <local:TypedAppManager.WindowTemplate>
+        <DataTemplate x:DataType="tabbed:TabbedWindowModel">
+            <tabs:TabView
+                ConnectionContext="{x:Bind Manager.ConnectionContext,Mode=OneWay}"
+                ItemsSource="{x:Bind TabItems}"
+                PrimarySelectedIndex="{x:Bind PrimarySelectedIndex,Mode=TwoWay}"
+            >
+                <tabs:TabView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <tabs:TabItem Content="{x:Bind}"/>
+                    </DataTemplate>
+                </tabs:TabView.ItemTemplate>
+                <tabs:TabView.ContentTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Hello! You are looking at the tab named "/>
+                            <TextBlock Text="{x:Bind}"/>
+                            <TextBlock Text="."/>
+                        </StackPanel>
+                    </DataTemplate>
+                </tabs:TabView.ContentTemplate>
+            </tabs:TabView>
+        </DataTemplate>
+    </local:TypedAppManager.WindowTemplate>
+</local:TypedAppManager>

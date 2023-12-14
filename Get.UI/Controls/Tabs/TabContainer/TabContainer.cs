@@ -22,6 +22,7 @@ namespace Get.UI.Controls.Tabs;
 [DependencyProperty<object>("ItemsSource")]
 [DependencyProperty<DataTemplate>("ItemTemplate")]
 [DependencyProperty<object>("PrimarySelectedItem")]
+[DependencyProperty<int>("PrimarySelectedIndex")]
 public partial class TabContainer : Control
 {
     public TabContainer()

@@ -9,6 +9,7 @@ namespace Get.UI.Controls.Tabs;
 [DependencyProperty(typeof(MotionDragConnectionContext), "ConnectionContext")]
 [DependencyProperty(typeof(object), "ItemsSource", GenerateLocalOnPropertyChangedMethod = true)]
 [DependencyProperty(typeof(object), "PrimarySelectedItem", GenerateLocalOnPropertyChangedMethod = true)]
+[DependencyProperty(typeof(int), "PrimarySelectedIndex", GenerateLocalOnPropertyChangedMethod = true)]
 [DependencyProperty(typeof(DataTemplate), "ItemTemplate", GenerateLocalOnPropertyChangedMethod = true)]
 [DependencyProperty(typeof(DataTemplate), "ToolbarTemplate", GenerateLocalOnPropertyChangedMethod = true)]
 [DependencyProperty(typeof(DataTemplate), "ContentTemplate", GenerateLocalOnPropertyChangedMethod = true)]

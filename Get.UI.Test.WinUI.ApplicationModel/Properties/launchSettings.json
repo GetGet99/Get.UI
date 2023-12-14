@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Get.UI.Test.WinUI.ApplicationModel (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Get.UI.Test.WinUI.ApplicationModel (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

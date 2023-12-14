@@ -33,6 +33,7 @@
                             ItemsSource="{TemplateBinding ItemsSource}"
                             ItemTemplate="{TemplateBinding ItemTemplate}"
                             PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                             ReorderOrientation="{TemplateBinding Orientation}"
                             ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                             VerticalAlignment="Center"

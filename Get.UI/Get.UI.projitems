@@ -9,6 +9,9 @@
     <Import_RootNamespace>Get.UI</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\tabbed\TabbedApplicationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\tabbed\TabbedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedWindowModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlsResources.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)controls\containers\ISelectableContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.AnimatingTranslation.cs" />
@@ -45,6 +48,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Structs And Enums\OrientationNeutralAlignment.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)ControlsResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

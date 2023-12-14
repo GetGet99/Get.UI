@@ -124,6 +124,8 @@
     <Compile Include="GlobalUsings.UWP.cs" />
     <Compile Include="PInvoke.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windowing\WindowInfo.cs" />
+    <Compile Include="Windowing\Window.cs" />
     <EmbeddedResource Include="Properties\Get.UI.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
