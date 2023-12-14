@@ -1,0 +1,50 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:guis="using:Get.UI.Controls"
+    xmlns:tabs="using:Get.UI.Controls.Tabs"
+    xmlns:ctns="using:Get.UI.Controls.Containers"
+>
+    <Style x:Name="DefaultMotionDragItemStyle" TargetType="ctns:MotionDragItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ctns:MotionDragItem">
+                    <Border Background="Transparent" x:Name="RootElement" BorderBrush="White" BorderThickness="0,1,0,1">
+                        <Border.RenderTransform>
+                            <CompositeTransform x:Name="RootTransform"/>
+                        </Border.RenderTransform>
+                        <Border.Resources>
+                            <Storyboard x:Name="TranslationResetStoryboard">
+                                <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateY">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                            <Storyboard x:Name="AnimatingTranslationStoryboard">
+                                <DoubleAnimation x:Name="AnimatingTranslateX" Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation x:Name="AnimatingTranslateY" Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateY">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </Border.Resources>
+                        <ContentControl Content="{TemplateBinding Content}" Foreground="White" Margin="5,5,5,5">
+                        </ContentControl>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+	</Style>
+    <Style TargetType="ctns:MotionDragItem" BasedOn="{StaticResource DefaultMotionDragItemStyle}" />
+</ResourceDictionary>

@@ -1,0 +1,44 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:guis="using:Get.UI.Controls"
+    xmlns:tabs="using:Get.UI.Controls.Tabs"
+    xmlns:pans="using:Get.UI.Controls.Panels"
+    xmlns:ctns="using:Get.UI.Controls.Containers"
+>
+    <Style x:Name="DefaultGUICTTabViewStyle" TargetType="tabs:TabView">
+        <Setter Property="ToolbarTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="tabs:TabView">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <tabs:TabContainer
+                            Orientation="Horizontal"
+                            Height="30"
+                            ItemsSource="{TemplateBinding ItemsSource}"
+                            ItemTemplate="{TemplateBinding ItemTemplate}"
+                            ConnectionContext="{TemplateBinding ConnectionContext}"
+                            PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                        >
+                            
+                        </tabs:TabContainer>
+                        <ContentPresenter Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ToolbarTemplate}" Grid.Row="1"/>
+                        <ContentPresenter Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Row="2"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="tabs:TabView" BasedOn="{StaticResource DefaultGUICTTabViewStyle}" />
+</ResourceDictionary>

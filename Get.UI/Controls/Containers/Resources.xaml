@@ -1,0 +1,10 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="MotionDragReorderContainer/MotionDragReorderContainer.xaml"/>
+        <ResourceDictionary Source="./MotionDragItem/MotionDragItem.xaml"/>
+        <ResourceDictionary Source="./MotionDragSelectableItem/MotionDragSelectableItem.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

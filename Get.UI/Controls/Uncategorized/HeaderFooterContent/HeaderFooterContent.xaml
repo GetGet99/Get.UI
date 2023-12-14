@@ -1,0 +1,35 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:guis="using:Get.UI.Controls"
+    xmlns:ints="using:Get.UI.Controls.Internals"
+    xmlns:tabs="using:Get.UI.Controls.Tabs"
+    xmlns:ctns="using:Get.UI.Controls.Containers"
+    xmlns:pans="using:Get.UI.Controls.Panels"
+    xmlns:exts="using:Get.UI.Extensions"
+>
+    <Style x:Name="DefaultThreeContainerControlStyle" TargetType="guis:HeaderFooterContent">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="guis:HeaderFooterContent">
+                    <ints:CustomizablePanel x:Name="PanelHost">
+                        <StackPanel x:Name="HeaderAndInset" Orientation="{TemplateBinding Orientation}">
+                            <guis:OffsetElement Orientation="{TemplateBinding Orientation}" OffsetAmount="{TemplateBinding StartInset}" />
+                            <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"/>
+                        </StackPanel>
+                        <pans:OrientedStack x:Name="ContentAndInline" Orientation="{TemplateBinding Orientation}">
+                            <ContentPresenter Content="{TemplateBinding InlineHeader}" ContentTemplate="{TemplateBinding InlineHeaderTemplate}" pans:OrientedStack.Length="Auto"/>
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" pans:OrientedStack.Length="*"/>
+                            <ContentPresenter Content="{TemplateBinding InlineFooter}" ContentTemplate="{TemplateBinding InlineFooterTemplate}" pans:OrientedStack.Length="Auto"/>
+                        </pans:OrientedStack>
+                        <StackPanel x:Name="FooterAndInset" Orientation="{TemplateBinding Orientation}">
+                            <ContentPresenter Content="{TemplateBinding Footer}" ContentTemplate="{TemplateBinding FooterTemplate}"/>
+                            <guis:OffsetElement Orientation="{TemplateBinding Orientation}" OffsetAmount="{TemplateBinding EndInset}" />
+                        </StackPanel>
+                    </ints:CustomizablePanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="guis:HeaderFooterContent" BasedOn="{StaticResource DefaultThreeContainerControlStyle}"/>
+</ResourceDictionary>

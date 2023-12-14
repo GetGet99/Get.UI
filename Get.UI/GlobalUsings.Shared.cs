@@ -1,0 +1,13 @@
+global using Get.EasyCSharp;
+global using Get.XAMLTools;
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using CommunityToolkit.WinUI;
+global using System.Diagnostics.CodeAnalysis;
+global using System.Numerics;
+global using System.Collections;
+global using System.Collections.Specialized;
+global using System.Diagnostics;
+global using Get.UI.Extensions;

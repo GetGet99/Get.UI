@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>83dce5db-1b79-4824-a716-2b66351a2a4e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Get.UI</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ControlsResources.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)controls\containers\ISelectableContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.AnimatingTranslation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.Manipulation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.IMotionDragConnectionReceiver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableItem\MotionDragSelectableItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Internals\CustomizablePanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\OrientedStackForContainer\OrientedStackForContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\OrientedStack\OrientedStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabContainer\TabContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabItem\TabItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabView\TabView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\HeaderFooterContent\HeaderFooterContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\HeaderFooterContent\HeaderFooterContent.Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\OffsetElement\OffsetElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\Converter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\FuncConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AutoOrientationProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DPCEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.Shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\DragPosition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\DropManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\DropManagerDeferral.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\GlobalContainerRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\IMotionDragConnectionReceiver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionEventDelegates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Structs And Enums\OrientationNeutralAlignment.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)ControlsResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableItem\MotionDragSelectableItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Containers\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Tabs\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabContainer\TabContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabItem\TabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabView\TabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\HeaderFooterContent\HeaderFooterContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\OffsetElement\OffsetElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

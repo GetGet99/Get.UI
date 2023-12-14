@@ -1,0 +1,3 @@
+MapWindowPoints
+GetModuleHandle
+GetProcAddress

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "SmartTabViewTest.WinUI (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "SmartTabViewTest.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
