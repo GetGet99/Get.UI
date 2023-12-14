@@ -91,7 +91,7 @@ partial class MotionDragContainer
             (float)(e.Cumulative.Translation.Y + translationRoot.Y),
         0);
         var localTranslation = translation;
-        ConnectionContext?.DragEvent(this, DraggingObject, dp, ref localTranslation);
+        ConnectionContext?.DragEvent(this, DraggingObject, ItemDragIndex, dp, ref localTranslation);
         Popup.Translation = localTranslation;
         //var hwnd = Popup.XamlRoot.ContentIslandEnvironment.AppWindowId;
         //System.Drawing.Point pt = default;
@@ -108,7 +108,7 @@ partial class MotionDragContainer
             return;
         }
         var dropManager = new DropManager();
-        ConnectionContext?.DropEvent(this, DraggingObject, new(GlobalRectangle, itemRect, initmousePos, e.Cumulative.Translation), dropManager);
+        ConnectionContext?.DropEvent(this, DraggingObject, ItemDragIndex, new(GlobalRectangle, itemRect, initmousePos, e.Cumulative.Translation), dropManager);
         await dropManager.WaitForDeferralAsync();
         if (sender is UIElement ele)
         {

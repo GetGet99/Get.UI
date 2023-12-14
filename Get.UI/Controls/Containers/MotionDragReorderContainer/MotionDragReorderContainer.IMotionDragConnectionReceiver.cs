@@ -19,7 +19,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
     GlobalContainerRect _globalRectangle;
     GlobalContainerRect GlobalRectangle => useCached ? _globalRectangle : GlobalContainerRect.GetFromContainer(this);
     GlobalContainerRect IMotionDragConnectionReceiver.GlobalRectangle => GlobalRectangle;
-    void IMotionDragConnectionReceiver.DragEnter(object? sender, object? item, DragPosition dragPositionIn, ref Point itemOffset)
+    void IMotionDragConnectionReceiver.DragEnter(object? sender, object? item, int senderIndex, DragPosition dragPositionIn, ref Point itemOffset)
     {
         if (!ReferenceEquals(sender, this))
             AnimationController.Reset();
@@ -38,14 +38,14 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             dragPosition.OriginalItemRect.Height;
         AnimationController.StartShiftIndex = AnimationController.IndexOfItemAt(dragPosition.MousePositionToContainer.X, dragPosition.MousePositionToContainer.Y);
     }
-    void IMotionDragConnectionReceiver.DragDelta(object? sender, object? item, DragPosition dragPosition, ref Point itemOffset)
+    void IMotionDragConnectionReceiver.DragDelta(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Point itemOffset)
         => DragDelta(sender, item, dragPosition, ref itemOffset);
 
-    void IMotionDragConnectionReceiver.DragLeave(object? sender, object? item)
+    void IMotionDragConnectionReceiver.DragLeave(object? sender, object? item, int senderIndex)
     {
         AnimationController.StartShiftIndex = ItemsCount;
     }
-    void IMotionDragConnectionReceiver.Drop(object? sender, object? item, DragPosition dragPosition, DropManager dropManager)
+    void IMotionDragConnectionReceiver.Drop(object? sender, object? item, int senderIndex, DragPosition dragPosition, DropManager dropManager)
     {
         //var pt = dragPosition.ItemPositionToScreen;
         //var hwnd = Popup.XamlRoot.ContentIslandEnvironment.AppWindowId;
@@ -61,6 +61,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             //}
             AnimationController.Reset();
             newIdx = Math.Min(newIdx, ItemsCount);
+            if (newIdx > ItemDragIndex) newIdx--;
             if (newIdx != ItemDragIndex)
             {
                 //int i = 0;
@@ -68,19 +69,18 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
                 //{
                 //    st2.ResetTranslationImmedietly();
                 //}
+                OnItemMovingInContainer(ItemDragIndex, newIdx);
                 var itemSource = ItemsSource;
                 if (itemSource is null)
                 {
                     var itemToMove = Items[ItemDragIndex];
                     Items.RemoveAt(ItemDragIndex);
-                    if (newIdx > ItemDragIndex) newIdx--;
                     Items.Insert(newIdx, itemToMove);
                 }
                 else if (itemSource is IList list)
                 {
                     var itemToMove = list[ItemDragIndex];
                     list.RemoveAt(ItemDragIndex);
-                    if (newIdx > ItemDragIndex) newIdx--;
                     list.Insert(newIdx, itemToMove);
                     if (list is not INotifyCollectionChanged)
                     {
@@ -93,6 +93,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
                 {
                     throw new NotSupportedException("ItemSource must implement IList");
                 }
+                OnItemMovedInContainer(ItemDragIndex, newIdx);
             }
 
             // We did want to remove  but I can say false here since we are interacting with the same object
@@ -135,7 +136,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             {
                 throw new NotSupportedException("ItemSource must implement IList");
             }
-            OnItemDropFromAnotherContainer(sender, item);
+            OnItemDropFromAnotherContainer(sender, item, senderIndex, newIdx);
             dropManager.ShouldItemBeRemovedFromHost = true;
             def.Complete();
         }
@@ -153,7 +154,15 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
         //if (InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift) is Windows.UI.Core.CoreVirtualKeyStates.Down)
         //    Debugger.Break();
     }
-    protected virtual void OnItemDropFromAnotherContainer(object? sender, object? item)
+    protected virtual void OnItemDropFromAnotherContainer(object? sender, object? item, int senderIndex, int newIndex)
+    {
+
+    }
+    protected virtual void OnItemMovingInContainer(int oldIndex, int newIndex)
+    {
+
+    }
+    protected virtual void OnItemMovedInContainer(int oldIndex, int newIndex)
     {
 
     }

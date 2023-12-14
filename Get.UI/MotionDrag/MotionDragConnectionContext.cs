@@ -8,7 +8,7 @@ public class MotionDragConnectionContext
     public event MotionDragConnectionDraggingOutside? DraggingOutside;
     public event MotionDragConnectionDroppedOutside? DroppedOutside;
     IMotionDragConnectionReceiver? CurrentReceiver;
-    internal void DragEvent(object? sender, object? item, DragPosition dragPosition, ref Vector3 itemOffset)
+    internal void DragEvent(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Vector3 itemOffset)
     {
         var mousePos = dragPosition.MousePositionToScreen;
         if (CurrentReceiver is null)
@@ -21,7 +21,7 @@ public class MotionDragConnectionContext
                 {
                     CurrentReceiver = receiver;
                     Point _offset = default;
-                    CurrentReceiver.DragEnter(sender, item, dragPosition, ref _offset);
+                    CurrentReceiver.DragEnter(sender, item, senderIndex, dragPosition, ref _offset);
                     itemOffset = new(
                         (float)_offset.X + itemOffset.X,
                         (float)_offset.Y + itemOffset.Y,
@@ -37,26 +37,26 @@ public class MotionDragConnectionContext
             if (rect.Contains(mousePos) && CurrentReceiver.IsVisibleAt(mousePos.Subtract(CurrentReceiver.GlobalRectangle.WindowPosOffset)))
             {
                 Point _offset = default;
-                CurrentReceiver.DragDelta(sender, item, dragPosition, ref _offset);
+                CurrentReceiver.DragDelta(sender, item, senderIndex, dragPosition, ref _offset);
                 itemOffset += _offset.AsVector3();
             } else
             {
-                CurrentReceiver.DragLeave(sender, item);
+                CurrentReceiver.DragLeave(sender, item, senderIndex);
                 CurrentReceiver = null;
-                DragEvent(sender, item, dragPosition, ref itemOffset);
+                DragEvent(sender, item, senderIndex, dragPosition, ref itemOffset);
             }
         }
     }
-    internal void DropEvent(object? sender, object? item, DragPosition dragPosition, DropManager dropManager)
+    internal void DropEvent(object? sender, object? item, int senderIndex, DragPosition dragPosition, DropManager dropManager)
     {
         if (CurrentReceiver is not null)
-            CurrentReceiver.Drop(sender, item, dragPosition, dropManager);
+            CurrentReceiver.Drop(sender, item, senderIndex, dragPosition, dropManager);
         else
             DroppedOutside?.Invoke(sender, item, dragPosition, dropManager);
     }
-    internal void CancelDragEvent(object? sender, object? item)
+    internal void CancelDragEvent(object? sender, object? item, int senderIndex)
     {
-        CurrentReceiver?.DragLeave(sender, item);
+        CurrentReceiver?.DragLeave(sender, item, senderIndex);
         CurrentReceiver = null;
     }
     public static void UnsafeAdd(MotionDragConnectionContext reference, IMotionDragConnectionReceiver receiver)

@@ -17,7 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.Template.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.IMotionDragConnectionReceiver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.MotionDragReorderItemMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragReorderContainer\MotionDragReorderContainer.MotionDragItemMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableItem\MotionDragSelectableItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Internals\CustomizablePanel.cs" />

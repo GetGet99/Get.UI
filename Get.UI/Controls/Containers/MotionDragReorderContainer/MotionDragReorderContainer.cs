@@ -23,6 +23,7 @@ public partial class MotionDragContainer : ItemsControl
     //int curHoverItemIndex;
     //double tranOffset;
     internal UIElement? SafeContainerFromIndex(int idx) => idx < 0 ? null : ContainerFromIndex(idx) as UIElement;
+    internal int SafeIndexFromContainer(DependencyObject? obj) => obj is null ? -1 : IndexFromContainer(obj);
     //bool DidSetZIndex = false;
     MotionDragItem CurrentManipulationItem;
     partial void OnConnectionContextChanged(MotionDragConnectionContext? oldValue, MotionDragConnectionContext? newValue)
