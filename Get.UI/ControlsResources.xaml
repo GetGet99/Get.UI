@@ -6,5 +6,6 @@
         <ResourceDictionary Source="Controls/Containers/Resources.xaml"/>
         <ResourceDictionary Source="Controls/Tabs/Resources.xaml"/>
         <ResourceDictionary Source="Controls/Uncategorized/Resources.xaml"/>
+        <ResourceDictionary Source="Platform.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

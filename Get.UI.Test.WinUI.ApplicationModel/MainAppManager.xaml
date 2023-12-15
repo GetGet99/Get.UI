@@ -7,6 +7,7 @@
     xmlns:tabs="using:Get.UI.Controls.Tabs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:guis="using:Get.UI.Controls"
     mc:Ignorable="d"
 >
     <local:TypedAppManager.SystemBackdrop>
@@ -14,26 +15,31 @@
     </local:TypedAppManager.SystemBackdrop>
     <local:TypedAppManager.WindowTemplate>
         <DataTemplate x:DataType="tabbed:TabbedWindowModel">
-            <tabs:TabView
-                ConnectionContext="{x:Bind Manager.ConnectionContext,Mode=OneWay}"
-                ItemsSource="{x:Bind TabItems}"
-                PrimarySelectedIndex="{x:Bind PrimarySelectedIndex,Mode=TwoWay}"
-            >
-                <tabs:TabView.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <tabs:TabItem Content="{x:Bind}"/>
-                    </DataTemplate>
-                </tabs:TabView.ItemTemplate>
-                <tabs:TabView.ContentTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Hello! You are looking at the tab named "/>
-                            <TextBlock Text="{x:Bind}"/>
-                            <TextBlock Text="."/>
-                        </StackPanel>
-                    </DataTemplate>
-                </tabs:TabView.ContentTemplate>
-            </tabs:TabView>
+            <Grid>
+                <guis:DragRegion Background="Transparent" Height="200" VerticalAlignment="Top"/>
+                <tabs:TabView
+                    Margin="20"
+                    ConnectionContext="{x:Bind Manager.ConnectionContext,Mode=OneWay}"
+                    ItemsSource="{x:Bind TabItems}"
+                    PrimarySelectedIndex="{x:Bind PrimarySelectedIndex,Mode=TwoWay}"
+                    Canvas.ZIndex="1"
+                >
+                    <tabs:TabView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <tabs:TabItem Content="{x:Bind}"/>
+                        </DataTemplate>
+                    </tabs:TabView.ItemTemplate>
+                    <tabs:TabView.ContentTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                                <TextBlock Text="Hello! You are looking at the tab named "/>
+                                <TextBlock Text="{x:Bind}"/>
+                                <TextBlock Text="."/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </tabs:TabView.ContentTemplate>
+                </tabs:TabView>
+            </Grid>
         </DataTemplate>
     </local:TypedAppManager.WindowTemplate>
 </local:TypedAppManager>

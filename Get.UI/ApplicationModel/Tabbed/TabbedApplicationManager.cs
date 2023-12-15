@@ -34,9 +34,11 @@ public partial class TabbedApplicationManager<T> : TabbedApplicationManager
     public new TabbedWindowModel<T> CreateNewWindow()
     {
 #if WINDOWS_UWP
+        throw new NotImplementedException();
 #else
         var window = new Windowing.Window(new(), isSettingRootContentAllowed: false);
         var model = new TabbedWindowModel<T>(this, window);
+        window.PlatformWindow.ExtendsContentIntoTitleBar = true;
         window.PlatformWindow.SystemBackdrop = SystemBackdrop;
         window.PlatformWindow.Content = new TabbedPage(this, model);
         _windows.Add(model);
@@ -78,6 +80,9 @@ public abstract partial class TabbedApplicationManager : DependencyObject
 
     private void ConnectionContext_DroppedOutside(object? sender, object? item, DragPosition dragPosition, DropManager dropManager)
     {
+#if WINDOWS_UWP
+throw new NotImplementedException();
+#else
         dropManager.ShouldItemBeRemovedFromHost = true;
         if (item is not null)
         {
@@ -94,5 +99,6 @@ public abstract partial class TabbedApplicationManager : DependencyObject
                     model.Window.Bounds with { X = (int)mousePos.X, Y = (int)mousePos.Y };
             model.Window.PlatformWindow.Activate();
         }
+#endif
     }
 }

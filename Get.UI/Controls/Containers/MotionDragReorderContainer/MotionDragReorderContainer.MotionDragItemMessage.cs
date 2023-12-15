@@ -22,6 +22,7 @@ partial class MotionDragContainer
 
     internal void MotionDragItemManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
     {
+        e.Handled = true;
         isCanceled = false;
         if (sender is not UIElement ele) return;
         Display.Width = ele.ActualSize.X;
@@ -53,6 +54,7 @@ partial class MotionDragContainer
     bool set;
     internal void MotionDragItemManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
+        e.Handled = true;
         if (isCanceled) return;
         if (WinWrapper.Input.Keyboard.IsKeyDown(WinWrapper.Input.VirtualKey.ESCAPE))
         {
@@ -102,6 +104,7 @@ partial class MotionDragContainer
 
     internal async void MotionDragItemManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
     {
+        e.Handled = true;
         if (isCanceled)
         {
             isCanceled = false;

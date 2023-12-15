@@ -1,3 +1,5 @@
 MapWindowPoints
 GetModuleHandle
 GetProcAddress
+SetCapture
+ReleaseCapture

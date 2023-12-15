@@ -9,6 +9,10 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="DragRegion.xaml" />
+	  <None Remove="Platform.xaml" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.230907" />
@@ -25,6 +29,15 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="WinWrapper.Windowing" Version="2.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Platform.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	  <Page Update="DragRegion.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<Import Project="..\Get.UI\Get.UI.projitems" Label="Shared" />
