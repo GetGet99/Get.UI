@@ -121,6 +121,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DragRegion.cs" />
     <Compile Include="GlobalUsings.UWP.cs" />
     <Compile Include="PInvoke.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
