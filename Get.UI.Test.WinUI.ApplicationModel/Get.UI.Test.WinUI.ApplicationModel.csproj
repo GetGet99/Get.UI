@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -12,9 +12,6 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <LangVersion>11</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="MainAppManager.xaml" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -42,11 +39,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Get.UI.WinUI\Get.UI.WinUI.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="MainAppManager.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
 
   <!-- 

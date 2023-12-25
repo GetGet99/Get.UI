@@ -12,6 +12,15 @@ public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect Co
         PointToScreen(default),
         ContainerRectToWindow.ToSize()
     );
+    internal static Point GetPos(nint hwnd)
+    {
+        System.Drawing.Point pt = default;
+        unsafe
+        {
+            _ = Windows.Win32.PInvoke.MapWindowPoints(new(hwnd), default, &pt, 1);
+        }
+        return new(pt.X, pt.Y);
+    }
     static Point GetPos(XamlRoot root)
     {
 #if WINDOWS_UWP

@@ -7,6 +7,5 @@
     xmlns:pans="using:Get.UI.Controls.Panels"
 >
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="./DragRegion.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

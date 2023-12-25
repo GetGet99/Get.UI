@@ -1,146 +1,139 @@
-﻿using Get.UI.MotionDrag;
-using Microsoft.UI.Windowing;
-using System.Runtime.InteropServices;
-using Windows.Graphics;
-using Windows.Win32;
-using WinWrapper.Input;
-using WinWrapper.Windowing;
-using DispatcherQueueTimer = Microsoft.UI.Dispatching.DispatcherQueueTimer;
-using Window = WinWrapper.Windowing.Window;
-
+﻿using Windows.Graphics;
+using System.Drawing;
 namespace Get.UI.Controls;
 
-public class DragRegion : Control
+public partial class DragRegion : Grid
 {
-    Border RootElement => (Border)GetTemplateChild(nameof(RootElement));
     public DragRegion()
     {
-        DefaultStyleKey = typeof(DragRegion);
-    }
-    protected override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-        RootElement.SizeChanged += RootElement_SizeChanged;
-        RootElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
-        RootElement.ManipulationStarting += RootElement_ManipulationStarting;
-        RootElement.ManipulationStarted += RootElement_ManipulationStarted;
-        RootElement.ManipulationDelta += RootElement_ManipulationDelta;
-        RootElement.ManipulationCompleted += RootElement_ManipulationCompleted;
-        //RootElement.PointerPressed += RootElement_PointerPressed;
-        //timer = DispatcherQueue.CreateTimer();
-        //timer.Interval = TimeSpan.FromMilliseconds(200);
-        //timer.Tick += (_, _) => TimerDone();
-        //Loaded += DragRegion_Loaded;
-        //Unloaded += DragRegion_Unloaded;
+        SizeChanged += DragRegion_SizeChanged;
+        Loaded += DragRegion_Loaded;
+        Unloaded += DragRegion_Unloaded;
+        PointerMoved += DragRegion_PointerMoved;
     }
 
-    private void RootElement_PointerPressed(object sender, PointerRoutedEventArgs e)
+    private void DragRegion_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
+        UpdateRegion();
         e.Handled = true;
-        var window = Window.GetWindowFromPoint(Cursor.Position);
-        var window2 = Window.FromWindowHandle((nint)XamlRoot.ContentIslandEnvironment.AppWindowId.Value);
-        
-        PInvoke.SetCapture(new(window2.Handle));
-        //window2.Focus();
-        //window2.SendMessage(WindowMessages.LButtonDown, 0, 0);
-        //window2.SendMessage(WindowMessages.LButtonUp, 0, 0);
-        window2.SendMessage(WindowMessages.SysCommand, (nuint)0xF012, 0);
     }
 
     private void DragRegion_Unloaded(object sender, RoutedEventArgs e)
     {
-        incps = null;
+        current?.ClearAllRegionRects();
     }
 
     private void DragRegion_Loaded(object sender, RoutedEventArgs e)
     {
+        current?.ClearAllRegionRects();
+        current = InputNonClientPointerSource.GetForWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
     }
 
-    private void Incps_PointerEntered(InputNonClientPointerSource sender, NonClientPointerEventArgs args)
+    private void DragRegion_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        
+        UpdateRegion();
     }
 
-    private void Incps_PointerPressed(InputNonClientPointerSource sender, NonClientPointerEventArgs args)
+    InputNonClientPointerSource? current;
+    void UpdateRegion()
     {
-        
+        current?.SetRegionRects(NonClientRegionKind.Caption,
+            InvertRegion(GetClickableRectangles(this, this), (int)ActualWidth, (int)ActualHeight)
+        );
     }
-
-    InputNonClientPointerSource? incps;
-    DispatcherQueueTimer timer;
-
-    private void RootElement_SizeChanged(object sender, SizeChangedEventArgs e)
+    static IEnumerable<Rectangle> GetClickableRectangles(UIElement element, UIElement relativeTo)
     {
-        //timer.Start();
-    }
-    void TimerDone()
-    {
-        if (!WinWrapper.Input.Cursor.IsLeftButtonDown)
+        var childCount = VisualTreeHelper.GetChildrenCount(element);
+        for (int i = 0; i < childCount; i++)
         {
-            timer.Start();
-            return;
-        }
-        if (incps is null)
-        {
-            appWindow = AppWindow.GetFromWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
-            incps = InputNonClientPointerSource.GetForWindowId(appWindow.Id);
-            incps.PointerPressed += Incps_PointerPressed;
-            incps.PointerEntered += Incps_PointerEntered;
-        }
-        if (incps is null) return;
-        try
-        {
-            var rect = GlobalContainerRect.GetFromContainer(this).ContainerRectToWindow;
-            if (rect.Y > 0)
+            var child = VisualTreeHelper.GetChild(element, i);
+            if (child switch
             {
-                rect = rect with { Y = 0, Height = rect.Bottom - 0 };
+                Panel panel => panel.Background == null,
+                Control control => control.Background == null,
+                Border border => border.Background == null,
+                ContentPresenter contentPresenter => contentPresenter.Background == null,
+                _ => false
+            })
+                // this element is probably designed to be click-through
+                foreach (var rect in GetClickableRectangles((UIElement)child, relativeTo))
+                    yield return rect;
+            else
+                // this element is probably not designed to be click through
+                yield return GetRect((UIElement)child, relativeTo);
+        }
+    }
+    static Rectangle GetRect(UIElement element, UIElement relativeTo)
+    {
+        var pt = element.TransformToVisual(relativeTo).TransformPoint(default);
+        return new() { X = (int)pt.X, Y = (int)pt.Y, Width = (int)element.ActualSize.X, Height = (int)element.ActualSize.Y };
+    }
+    // This code is written by ChatGPT with some modification
+    static RectInt32[] InvertRegion(IEnumerable<Rectangle> uiPlaces, int width, int height)
+    {
+        // Add the initial full area rectangle
+        List<Rectangle> invertedRegion = [new(0, 0, width, height)];
+
+        // Remove each UI rectangle from the full area to get the inverted region
+        foreach (Rectangle uiRect in uiPlaces)
+        {
+            List<Rectangle> newInvertedRegion = [];
+
+            foreach (Rectangle regionRect in invertedRegion)
+            {
+                if (regionRect.IntersectsWith(uiRect))
+                {
+                    // Split the region into parts and keep the parts that are outside the UI rectangle
+                    IEnumerable<Rectangle> splitRectangles = SplitRectangle(regionRect, uiRect);
+
+                    foreach (Rectangle splitRect in splitRectangles)
+                    {
+                        if (splitRect.Width > 0 && splitRect.Height > 0)
+                        {
+                            newInvertedRegion.Add(splitRect);
+                        }
+                    }
+                }
+                else
+                {
+                    newInvertedRegion.Add(regionRect);
+                }
             }
-            incps.ClearRegionRects(NonClientRegionKind.Caption);
-            incps.SetRegionRects(NonClientRegionKind.Caption, new RectInt32[]
-            {
-                new((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height)
-            });
+
+            invertedRegion = newInvertedRegion;
         }
-        catch { }
-    }
 
-    private void RootElement_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        return invertedRegion.Select(x => new RectInt32(x.X, x.Y, x.Width, x.Height)).ToArray();
+    }
+    // This code is written by ChatGPT with some modification
+    static IEnumerable<Rectangle> SplitRectangle(Rectangle originalRect, Rectangle splitRect)
     {
-        e.Handled = true;
-        //InputNonClientPointerSource.GetForWindowId(appWindow!.Id)
-        //.ClearRegionRects(NonClientRegionKind.Caption);
-    }
+        // Split the original rectangle by the split rectangle
 
-    AppWindow? appWindow;
-    Point translationDeltaRemaining;
-    private void RootElement_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
-    {
-        e.Handled = true;
-        translationDeltaRemaining = translationDeltaRemaining.Add(e.Delta.Translation.Multiply(XamlRoot.RasterizationScale));
-        var moveAmount = new PointInt32((int)translationDeltaRemaining.X, (int)translationDeltaRemaining.Y);
-        var newPos = appWindow!.Position;
-        newPos.X += moveAmount.X;
-        newPos.Y += moveAmount.Y;
-        appWindow!.Move(newPos);
-        translationDeltaRemaining = new(translationDeltaRemaining.X - moveAmount.X, translationDeltaRemaining.Y - moveAmount.Y);
-    }
+        if (originalRect.IntersectsWith(splitRect))
+        {
+            Rectangle intersection = Rectangle.Intersect(originalRect, splitRect);
 
-    private void RootElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
-    {
-        e.Handled = true;
-        appWindow = AppWindow.GetFromWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
-        translationDeltaRemaining = e.Cumulative.Translation.Multiply(XamlRoot.RasterizationScale);
-        var moveAmount = new PointInt32((int)translationDeltaRemaining.X, (int)translationDeltaRemaining.Y);
-        var newPos = appWindow.Position;
-        newPos.X += moveAmount.X;
-        newPos.Y += moveAmount.Y;
-        appWindow.Move(newPos);
-        translationDeltaRemaining = new(translationDeltaRemaining.X - moveAmount.X, translationDeltaRemaining.Y - moveAmount.Y);
-    }
+            if (intersection.Width > 0 && intersection.Height > 0)
+            {
+                // Split the original rectangle into parts excluding the split rectangle
 
-    private void RootElement_ManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)
-    {
-        e.Handled = true;
-    }
+                // Top part
+                yield return new Rectangle(originalRect.X, originalRect.Y, originalRect.Width, intersection.Top - originalRect.Top);
 
+                // Bottom part
+                yield return new Rectangle(originalRect.X, intersection.Bottom, originalRect.Width, originalRect.Bottom - intersection.Bottom);
+
+                // Left part
+                yield return new Rectangle(originalRect.X, intersection.Top, intersection.Left - originalRect.Left, intersection.Height);
+
+                // Right part
+                yield return new Rectangle(intersection.Right, intersection.Top, originalRect.Right - intersection.Right, intersection.Height);
+
+                yield break;
+            }
+        }
+
+        yield return originalRect;
+    }
 }

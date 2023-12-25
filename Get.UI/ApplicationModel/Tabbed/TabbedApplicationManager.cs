@@ -81,7 +81,7 @@ public abstract partial class TabbedApplicationManager : DependencyObject
     private void ConnectionContext_DroppedOutside(object? sender, object? item, DragPosition dragPosition, DropManager dropManager)
     {
 #if WINDOWS_UWP
-throw new NotImplementedException();
+        throw new NotImplementedException();
 #else
         dropManager.ShouldItemBeRemovedFromHost = true;
         if (item is not null)

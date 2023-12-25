@@ -31,6 +31,8 @@
                             ConnectionContext="{TemplateBinding ConnectionContext}"
                             PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                             PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            StartInset="{TemplateBinding TitleBarLeftInset}"
+                            EndInset="{TemplateBinding TitleBarRightInset}"
                         >
                             
                         </tabs:TabContainer>

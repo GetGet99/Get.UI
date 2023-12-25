@@ -17,6 +17,8 @@ namespace Get.UI.Controls.Tabs;
 [DependencyProperty(typeof(DataTemplate), "TabFooterTemplate", GenerateLocalOnPropertyChangedMethod = true)]
 [DependencyProperty(typeof(DataTemplate), "TabInlineHeaderTemplate", GenerateLocalOnPropertyChangedMethod = true)]
 [DependencyProperty(typeof(DataTemplate), "TabInlineFooterTemplate", GenerateLocalOnPropertyChangedMethod = true)]
+[DependencyProperty(typeof(double), "TitleBarLeftInset", GenerateLocalOnPropertyChangedMethod = true)]
+[DependencyProperty(typeof(double), "TitleBarRightInset", GenerateLocalOnPropertyChangedMethod = true)]
 public partial class TabView : Control
 {
     public TabView()

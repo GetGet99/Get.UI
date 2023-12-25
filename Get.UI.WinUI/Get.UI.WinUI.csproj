@@ -10,11 +10,11 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-	  <None Remove="DragRegion.xaml" />
 	  <None Remove="Platform.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Interop.UIAutomationClient" Version="10.19041.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.230907" />
 		<PackageReference Include="Get.EasyCSharp.Generator" Version="1.2.0" />
 		<PackageReference Include="Get.XAMLTools.Generator" Version="1.0.5" />
@@ -28,14 +28,12 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="WinUIEx" Version="2.3.3" />
 		<PackageReference Include="WinWrapper.Windowing" Version="2.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Page Update="Platform.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	  <Page Update="DragRegion.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
