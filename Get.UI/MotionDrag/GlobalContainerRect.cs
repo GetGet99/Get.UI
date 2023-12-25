@@ -48,10 +48,16 @@ public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect Co
         return new(pt.X, pt.Y);
 #endif
     }
+#if WINDOWS_UWP
+    internal static object GetWindowContext(XamlRoot root)
+    {
+        return root.UIContext.As<Windows.Internal.IUIContextPartner>().WindowContext;
+    }
+#endif
     internal static nint GetHwnd(XamlRoot root)
     {
 #if WINDOWS_UWP
-        switch (root.UIContext.As<Windows.Internal.IUIContextPartner>().WindowContext)
+        switch (GetWindowContext(root))
         {
             case CoreWindow cw:
                 return cw.As<ICoreWindowInterop>().WindowHandle;

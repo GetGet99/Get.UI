@@ -44,11 +44,7 @@ public partial class MotionDragContainer : ItemsControl
     readonly MotionDragReorderContainerController AnimationController;
     partial void OnReorderOrientationChanged(Orientation oldValue, Orientation newValue)
     {
-        int i = 0;
-        while (SafeContainerFromIndex(i++)?.FindDescendantOrSelf<MotionDragItem>() is { } st)
-        {
-            st.OnReorderOrientationUpdated();
-        }
+
     }
     internal object? ObjectFromSRI(MotionDragItem item)
     {

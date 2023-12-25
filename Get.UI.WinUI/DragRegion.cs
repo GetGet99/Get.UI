@@ -12,6 +12,11 @@ public partial class DragRegion : Grid
         PointerMoved += DragRegion_PointerMoved;
     }
 
+    private void XamlRoot_Changed(XamlRoot sender, XamlRootChangedEventArgs args)
+    {
+        UpdateRegion();
+    }
+
     private void DragRegion_PointerMoved(object sender, PointerRoutedEventArgs e)
     {
         UpdateRegion();
@@ -20,11 +25,20 @@ public partial class DragRegion : Grid
 
     private void DragRegion_Unloaded(object sender, RoutedEventArgs e)
     {
-        current?.ClearAllRegionRects();
+        XamlRoot.Changed -= XamlRoot_Changed;
+        try
+        {
+            current?.ClearAllRegionRects();
+        } catch
+        {
+
+        }
     }
 
     private void DragRegion_Loaded(object sender, RoutedEventArgs e)
     {
+        XamlRoot.Changed -= XamlRoot_Changed;
+        XamlRoot.Changed += XamlRoot_Changed;
         current?.ClearAllRegionRects();
         current = InputNonClientPointerSource.GetForWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
     }
