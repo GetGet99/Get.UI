@@ -30,4 +30,6 @@ public class Window
         IsSettingRootContentAllowed = isSettingRootContentAllowed;
     }
     public void Close() => PlatformWindow.Close();
+    public int TitleBarLeftInset => PlatformWindow.AppWindow.TitleBar.LeftInset;
+    public int TitleBarRightInset => PlatformWindow.AppWindow.TitleBar.LeftInset;
 }

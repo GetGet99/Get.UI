@@ -6,4 +6,6 @@ public class Window
     {
         
     }
+    public int TitleBarLeftInset { get; }
+    public int TitleBarRightInset { get; }
 }
