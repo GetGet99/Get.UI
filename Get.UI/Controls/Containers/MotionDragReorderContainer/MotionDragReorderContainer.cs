@@ -48,7 +48,7 @@ public partial class MotionDragContainer : ItemsControl
     }
     internal object? ObjectFromSRI(MotionDragItem item)
     {
-        return FirstNotNullOrNull(item.FindAscendants(), x => ItemFromContainer(x));
+        return FirstNotNullOrNull(item.FindAscendants(), ItemFromContainer);
 
     }
     TReturn? FirstNotNullOrNull<TReturn, TSource>(IEnumerable<TSource> t, Func<TSource, TReturn?> func) where TReturn : class

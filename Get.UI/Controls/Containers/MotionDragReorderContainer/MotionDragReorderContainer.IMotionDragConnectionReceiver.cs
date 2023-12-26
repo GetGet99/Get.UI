@@ -116,6 +116,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             //{
             //    st2.ResetTranslationImmedietly();
             //}
+            OnItemDroppingFromAnotherContainer(sender, item, senderIndex, newIdx);
             if (newIdx > ItemsCount) newIdx = ItemsCount;
             var itemSource = ItemsSource;
             if (itemSource is null)
@@ -153,6 +154,10 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
         }
         //if (InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift) is Windows.UI.Core.CoreVirtualKeyStates.Down)
         //    Debugger.Break();
+    }
+    protected virtual void OnItemDroppingFromAnotherContainer(object? sender, object? item, int senderIndex, int newIndex)
+    {
+
     }
     protected virtual void OnItemDropFromAnotherContainer(object? sender, object? item, int senderIndex, int newIndex)
     {

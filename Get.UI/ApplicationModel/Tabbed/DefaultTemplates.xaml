@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="Get.UI.ApplicationModel.Tabbed.DefaultTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Get.UI.ApplicationModel.Tabbed"
+    xmlns:tabbed="using:Get.UI.ApplicationModel.Tabbed"
+    xmlns:tabs="using:Get.UI.Controls.Tabs"
+    xmlns:guis="using:Get.UI.Controls"
+    mc:Ignorable="d"
+>
+    <Page.Resources>
+        <DataTemplate x:Name="TabWindowTemplate" x:DataType="tabbed:TabbedWindowModel" x:FieldModifier="Public">
+            <guis:DragRegion>
+                <tabs:TabView
+                    ConnectionContext="{x:Bind Manager.ConnectionContext,Mode=OneWay}"
+                    ItemsSource="{x:Bind TabItems}"
+                    PrimarySelectedIndex="{x:Bind PrimarySelectedIndex,Mode=TwoWay}"
+                    Canvas.ZIndex="1"
+                    TitleBarLeftInset="{x:Bind Window.PlatformWindow.AppWindow.TitleBar.LeftInset}"
+                    TitleBarRightInset="{x:Bind Window.PlatformWindow.AppWindow.TitleBar.RightInset}"
+                    ItemTemplate="{x:Bind Manager.ItemTemplate}"
+                    ContentTemplate="{x:Bind Manager.ContentTemplate}"
+                    AddTabCommand="{x:Bind AddTabCommand}"
+                >
+                </tabs:TabView>
+            </guis:DragRegion>
+        </DataTemplate>
+        <DataTemplate x:Name="TabItemTemplate" x:FieldModifier="Public">
+            <tabs:TabItem Content="Default Tab">
+            </tabs:TabItem>
+        </DataTemplate>
+        <DataTemplate x:Name="TabContentTemplate" x:FieldModifier="Public">
+            <TextBox Text="Hi! Welcome to the new Tab app. Be sure to set the ItemTemplate and ContentTemplate to replace these default text!"/>
+        </DataTemplate>
+    </Page.Resources>
+</Page>

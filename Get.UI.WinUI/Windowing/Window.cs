@@ -29,4 +29,5 @@ public class Window
         PlatformWindow = window;
         IsSettingRootContentAllowed = isSettingRootContentAllowed;
     }
+    public void Close() => PlatformWindow.Close();
 }

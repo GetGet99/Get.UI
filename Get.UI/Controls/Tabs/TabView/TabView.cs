@@ -1,24 +1,43 @@
 ﻿using Get.UI.MotionDrag;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Get.UI.Controls.Tabs;
 
-[DependencyProperty(typeof(bool), "AllowUserTabGroupping", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(Visibility), "TabsVisibility", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(TabAlignment), "TabsAlignment", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(Visibility), "ToolbarVisibility", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(MotionDragConnectionContext), "ConnectionContext")]
-[DependencyProperty(typeof(object), "ItemsSource", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(object), "PrimarySelectedItem", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(int), "PrimarySelectedIndex", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "ItemTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "ToolbarTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "ContentTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "TabHeaderTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "TabFooterTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "TabInlineHeaderTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(DataTemplate), "TabInlineFooterTemplate", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(double), "TitleBarLeftInset", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty(typeof(double), "TitleBarRightInset", GenerateLocalOnPropertyChangedMethod = true)]
+[DependencyProperty<object>("Header")]
+[DependencyProperty<DataTemplate>("HeaderTemplate")]
+[DependencyProperty<object>("Footer")]
+[DependencyProperty<DataTemplate>("FooterTemplate")]
+[DependencyProperty<object>("InlineHeader")]
+[DependencyProperty<DataTemplate>("InlineHeaderTemplate")]
+[DependencyProperty<object>("InlineFooter")]
+[DependencyProperty<DataTemplate>("InlineFooterTemplate")]
+[DependencyProperty<double?>("TabContainerRequestedSize")]
+[DependencyProperty<Orientation>("Orientation", GenerateLocalOnPropertyChangedMethod = true)]
+[DependencyProperty<OrientationNeutralAlignment>("Alignment")]
+[DependencyProperty<CenterAlignmentResolvingMode>("TabContainerCenterAlignmentResolvingMode")]
+[DependencyProperty<object>("ItemsSource")]
+[DependencyProperty<DataTemplate>("ItemTemplate")]
+[DependencyProperty<MotionDragConnectionContext>("ConnectionContext")]
+[DependencyProperty<object>("PrimarySelectedItem", GenerateLocalOnPropertyChangedMethod = true)]
+[DependencyProperty<int>("PrimarySelectedIndex")]
+[DependencyProperty<double>("TitleBarLeftInset")]
+[DependencyProperty<double>("TitleBarRightInset")]
+[DependencyProperty<ICommand>("TabCloseCommand", UseNullableReferenceType = true)]
+[DependencyProperty<Visibility>("TabsVisibility")]
+[DependencyProperty<DataTemplate>("ToolbarTemplate")]
+[DependencyProperty<DataTemplate>("ContentTemplate")]
+[DependencyProperty<Visibility>("AddTabButtonVisibility")]
+[DependencyProperty<ICommand>("AddTabCommand", UseNullableReferenceType = true)]
+[DependencyProperty<object>("AddTabCommandParameter", UseNullableReferenceType = true)]
+//[DependencyProperty<bool>("AllowUserTabGroupping")]
+//[DependencyProperty<TabAlignment>("TabsAlignment")]
+//[DependencyProperty<Visibility>("ToolbarVisibility")]
+
+//[DependencyProperty<DataTemplate>("TabHeaderTemplate")]
+//[DependencyProperty<DataTemplate>("TabFooterTemplate")]
+//[DependencyProperty<DataTemplate>("TabInlineHeaderTemplate")]
+//[DependencyProperty<DataTemplate>("TabInlineFooterTemplate")]
 public partial class TabView : Control
 {
     public TabView()
@@ -26,9 +45,11 @@ public partial class TabView : Control
         DefaultStyleKey = typeof(TabView);
         ConnectionContext = new();
     }
+    public event RoutedEventHandler? AddTabButtonClicked;
     T GetTemplateChild<T>(string name) where T : DependencyObject => (T)GetTemplateChild(name);
     ContentPresenter? ContentPresenter => GetTemplateChild<ContentPresenter>(nameof(ContentPresenter));
     ContentPresenter? ToolbarPresenter => GetTemplateChild<ContentPresenter>(nameof(ToolbarPresenter));
+    TabContainer? TabContainer => GetTemplateChild<TabContainer>(nameof(TabContainer));
 
     partial void OnPrimarySelectedItemChanged(object oldValue, object newValue)
     {
@@ -39,16 +60,22 @@ public partial class TabView : Control
     protected override void OnApplyTemplate()
     {
         var newValue = PrimarySelectedItem;
-        ContentPresenter.Visibility = ToolbarPresenter.Visibility
+        ContentPresenter!.Visibility = ToolbarPresenter!.Visibility
             = newValue is null ? Visibility.Collapsed : Visibility.Visible;
+        TabContainer!.AddTabButtonClicked += (o, e) => AddTabButtonClicked?.Invoke(o, e);
         base.OnApplyTemplate();
     }
+    public Task<bool> AttemptToCloseAllTabsAsync() => TabContainer?.AttemptToCloseAllTabsAsync() ?? Task.FromResult(false);
 }
 public enum TabAlignment
 {
-    // Left or Top
+    /// <summary>
+    /// Left or Top
+    /// </summary>
     Start,
     Center,
-    // Bottom or Right
+    /// <summary>
+    /// Bottom or Right
+    /// </summary>
     End
 }

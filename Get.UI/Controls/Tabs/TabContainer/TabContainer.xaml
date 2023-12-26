@@ -16,7 +16,9 @@
                         Footer="{TemplateBinding Footer}"
                         FooterTemplate="{TemplateBinding FooterTemplate}"
                         InlineHeader="{TemplateBinding InlineHeader}"
+                        InlineHeaderTemplate="{TemplateBinding InlineHeaderTemplate}"
                         InlineFooter="{TemplateBinding InlineFooter}"
+                        InlineFooterTemplate="{TemplateBinding InlineFooterTemplate}"
                         ContentRequestedSize="{TemplateBinding TabContainerRequestedSize}"
                         Orientation="{TemplateBinding Orientation}"
                         Alignment="{TemplateBinding Alignment}"
@@ -24,21 +26,32 @@
                         StartInset="{TemplateBinding StartInset}"
                         EndInset="{TemplateBinding EndInset}"
                     >
-                        <!--<ScrollViewer HorizontalScrollMode="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            
-                        </ScrollViewer>-->
-                        <ctns:MotionDragSelectableContainer
-                            MinWidth="100"
-                            Height="{TemplateBinding Height}"
-                            ItemsSource="{TemplateBinding ItemsSource}"
-                            ItemTemplate="{TemplateBinding ItemTemplate}"
-                            PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                            PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                            ReorderOrientation="{TemplateBinding Orientation}"
-                            ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                            VerticalAlignment="Center"
-                        >
-                        </ctns:MotionDragSelectableContainer>
+                        <ScrollViewer x:Name="ContainerAreaScrollViewer" HorizontalAlignment="Left">
+                            <StackPanel Orientation="{TemplateBinding Orientation}">
+                                <ctns:MotionDragSelectableContainer
+                                    x:Name="Container"
+                                    MinWidth="100"
+                                    Height="{TemplateBinding Height}"
+                                    ItemsSource="{TemplateBinding ItemsSource}"
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    ReorderOrientation="{TemplateBinding Orientation}"
+                                    ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    VerticalAlignment="Center"
+                                    PreferAlwaysSelectItem="True"
+                                >
+                                </ctns:MotionDragSelectableContainer>
+                                <Button
+                                    x:Name="AddTabButton"
+                                    Padding="5"
+                                    Visibility="{TemplateBinding AddTabButtonVisibility}"
+                                    CommandParameter="{TemplateBinding AddTabCommandParameter}"
+                                >
+                                    <SymbolIcon>Add</SymbolIcon>
+                                </Button>
+                            </StackPanel>
+                        </ScrollViewer>
                     </guis:HeaderFooterContent>
                 </ControlTemplate>
             </Setter.Value>

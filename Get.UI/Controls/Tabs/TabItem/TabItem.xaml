@@ -58,7 +58,7 @@
                         <Border x:Name="BackgroundPlace">
                             <pans:OrientedStack Orientation="Horizontal">
                                 <ContentControl Content="{TemplateBinding Content}" MinWidth="100" Foreground="White" Margin="5,5,5,5" pans:OrientedStack.Length="Auto" />
-                                <Button Grid.Column="1" pans:OrientedStack.Length="Auto">X</Button>
+                                <Button x:Name="CloseButton" Grid.Column="1" pans:OrientedStack.Length="Auto">X</Button>
                             </pans:OrientedStack>
                         </Border>
                     </Border>

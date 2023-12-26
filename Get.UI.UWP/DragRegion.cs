@@ -4,6 +4,7 @@ using Windows.UI.Core;
 using Windows.UI.WindowManagement;
 namespace Get.UI.Controls;
 
+[AttachedProperty(typeof(bool), "Clickable", typeof(FrameworkElement), Documentation = "/// This property does nothing. Maintain to keep the difference between UWP and WinUI 3 version the same")]
 public partial class DragRegion : Grid
 {
     public DragRegion()

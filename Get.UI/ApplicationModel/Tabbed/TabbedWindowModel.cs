@@ -1,6 +1,7 @@
 using Get.UI.ApplicationModel.Tabbed;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using Window = Get.UI.Windowing.Window;
 namespace Get.UI.ApplicationModel.Tabbed;
 
@@ -22,9 +23,11 @@ public partial class TabbedWindowModel : DependencyObject
         Manager = owner;
         Window = window;
         TabItems = tabItems;
+        AddTabCommand = new ActionCommand(x => Manager.InternalAddTab(this, x));
     }
 
     public TabbedApplicationManager Manager { get; }
     public Window Window { get; }
     public object TabItems { get; }
+    public ICommand AddTabCommand { get; }
 }

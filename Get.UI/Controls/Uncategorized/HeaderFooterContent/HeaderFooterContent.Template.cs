@@ -39,10 +39,10 @@ partial class HeaderFooterContent
         if (ContentAndInline is not { } content) return default;
         if (CenterAlignmentResolvingMode is CenterAlignmentResolvingMode.AbsoluteCenterResizeDown)
             content.Measure(
-                OFToSize((Math.Min(
+                OFToSize((Math.Max(Math.Min(
                     avalSize.Along - Math.Max(headerSize.Along, footerSize.Along) * 2,
                     ContentRequestedSize ?? avalSize.Along
-                ), avalSize.Opposite))
+                ), 0), avalSize.Opposite))
             );
         else
             content.Measure(
