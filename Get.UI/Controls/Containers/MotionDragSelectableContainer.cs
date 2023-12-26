@@ -87,7 +87,7 @@ public partial class MotionDragSelectableContainer : MotionDragContainer, ISelec
         }
         if (newValue is < 0 && PreferAlwaysSelectItem && ItemsCount > 0)
         {
-            var guessNewIndex = Math.Clamp(oldValue - 1, 0, ItemsCount);
+            var guessNewIndex = Math.Clamp(oldValue - 1, 0, ItemsCount - 1);
             PrimarySelectedIndex = guessNewIndex;
         }
     }
