@@ -85,7 +85,7 @@ public partial class MotionDragSelectableContainer : MotionDragContainer, ISelec
             if (container2.FindDescendantOrSelf<MotionDragSelectableItem>() is { } item2)
                 item2.IsPrimarySelected = true;
         }
-        if (newValue is < 0 && PreferAlwaysSelectItem)
+        if (newValue is < 0 && PreferAlwaysSelectItem && ItemsCount > 0)
         {
             var guessNewIndex = Math.Clamp(oldValue - 1, 0, ItemsCount);
             PrimarySelectedIndex = guessNewIndex;
