@@ -33,7 +33,7 @@
     </local:TypedAppManager.ContentTemplate>
     <local:TypedAppManager.HeaderTemplate>
         <DataTemplate x:DataType="tabbed:TabbedWindowModel">
-            <Button Content="Swap" Click="Button_Click" Tag="{x:Bind}"/>
+            <Button Content="Swap" Click="Button_Click" Tag="{x:Bind}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </DataTemplate>
     </local:TypedAppManager.HeaderTemplate>
 </local:TypedAppManager>

@@ -61,6 +61,9 @@
                                     </VisualState.StateTriggers>
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.CornerRadius" Value="8, 8, 0, 0"/>
+                                        <Setter Target="BackgroundPlace.Margin" Value="10, 0, 10, 0"/>
+                                        <Setter Target="corner1.HorizontalAlignment" Value="Left"/>
+                                        <Setter Target="corner1.VerticalAlignment" Value="Bottom"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Vertical">
@@ -72,6 +75,9 @@
                                     </VisualState.StateTriggers>
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.CornerRadius" Value="8, 0, 0, 8"/>
+                                        <Setter Target="BackgroundPlace.Margin" Value="0, 10, 0, 10"/>
+                                        <Setter Target="corner1.HorizontalAlignment" Value="Right"/>
+                                        <Setter Target="corner1.VerticalAlignment" Value="Top"/>
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
@@ -111,6 +117,7 @@
                                         Foreground="White"
                                         Margin="10,5,5,5"
                                         pans:OrientedStack.Length="Auto"
+                                        VerticalAlignment="Center"
                                         CornerRadius="4, 4, 0, 0"
                                     />
                                     <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Grid.Column="1" pans:OrientedStack.Length="Auto" Padding="0" Width="35" Margin="0, 5, 5, 5">
