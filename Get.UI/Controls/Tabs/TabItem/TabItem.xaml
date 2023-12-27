@@ -13,9 +13,24 @@
                         <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="45" BorderThickness="1,1,1,1">
                             <Border.RenderTransform>
                                 <CompositeTransform x:Name="RootTransform"/>
-                            </Border.RenderTransform>
-                            <VisualStateManager.VisualStateGroups>
+                        </Border.RenderTransform>
+                        <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="Selection">
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource ControlFillColorSecondaryBrush}"/>
+                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource ControlElevationBorderBrush}"/>
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="BackgroundPlace" Storyboard.TargetProperty="Background" To="{ThemeResource ControlFillColorSecondaryBrush}"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
+                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource ControlElevationBorderBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
@@ -23,13 +38,13 @@
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Deselected">
-                                        <VisualState.Setters>
-                                            <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Border.Resources>
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border.Resources>
                                 <Storyboard x:Name="TranslationResetStoryboard">
                                     <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
                                         <DoubleAnimation.EasingFunction>
