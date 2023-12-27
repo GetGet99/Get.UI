@@ -51,7 +51,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\IMotionDragConnectionReceiver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionEventDelegates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StateTriggers\OrientationStateTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Structs And Enums\OrientationNeutralAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StateTriggers\ValueStateTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)windowing\Window.cs" />
   </ItemGroup>
   <ItemGroup>
