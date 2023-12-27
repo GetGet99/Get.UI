@@ -1,8 +1,11 @@
+using Microsoft.UI.Xaml.Controls;
+using System.Diagnostics;
+
 namespace Get.UI.Controls.Panels;
 [AttachedProperty(typeof(GridUnitType), "LengthType", GenerateLocalOnPropertyChangedMethod = true)]
 [AttachedProperty(typeof(double), "LengthValue", GenerateLocalOnPropertyChangedMethod = true)]
 [AttachedProperty(typeof(GridLength), "Length", GenerateLocalOnPropertyChangedMethod = true)]
-[DependencyProperty<Orientation>("Orientation", GenerateLocalOnPropertyChangedMethod = true, LocalOnPropertyChangedMethodWithParameter = false, LocalOnPropertyChangedMethodName = nameof(InvalidateArrange))]
+[DependencyProperty<Orientation>("Orientation", GenerateLocalOnPropertyChangedMethod = true)]
 public partial class OrientedStack : Panel
 {
     static partial void OnLengthChanged(DependencyObject obj, GridLength oldValue, GridLength newValue)
@@ -27,14 +30,17 @@ public partial class OrientedStack : Panel
         if (GetLength(obj) != length)
             SetLength(obj, length);
     }
-    protected override Size MeasureOverride(Size availableSize)
-        => 
-        DoLogic(availableSize, false);
-    protected override Size ArrangeOverride(Size finalSize)
-        => DoLogic(finalSize, true);
-
-    Size DoLogic(Size avaliableSize, bool shouldArrange)
+    partial void OnOrientationChanged(Orientation oldValue, Orientation newValue)
     {
+        InvalidateMeasure();
+        InvalidateArrange();
+    }
+    protected override Size MeasureOverride(Size availableSize)
+    {
+#if DEBUG
+        if (Tag is "Debug")
+            Debugger.Break();
+#endif
         var orientation = Orientation;
         (double Along, double Opposite) SizeToOF(Size size) =>
             orientation is Orientation.Horizontal ?
@@ -42,16 +48,14 @@ public partial class OrientedStack : Panel
         Size OFToSize((double Along, double Opposite) of) =>
             orientation is Orientation.Horizontal ?
             new(of.Along, of.Opposite) : new(of.Opposite, of.Along);
-        Point OFToPoint((double Along, double Opposite) of) =>
-            orientation is Orientation.Horizontal ?
-            new(of.Along, of.Opposite) : new(of.Opposite, of.Along);
-        var panelSize = SizeToOF(avaliableSize);
-
+        var panelSize = SizeToOF(availableSize);
+        var panelRemainingSize = panelSize;
+        double totalUsed = 0;
         var count = Children.Count;
         List<(double pixel, UIElement ele)> pixelList = new(count);
         List<UIElement> autoList = new(count);
         List<(double star, UIElement ele)> starList = new(count);
-        
+
         double totalAbsolutePixel = 0, totalStar = 0, maxOpposite = 0;
         foreach (var child in Children)
         {
@@ -68,66 +72,125 @@ public partial class OrientedStack : Panel
             else
             {
                 totalAbsolutePixel += length.Value;
-                pixelList.Add((length.Value, child));
             }
         }
-        var remainingSpace = panelSize.Along - totalAbsolutePixel;
-        if (remainingSpace < 0) remainingSpace = 0;
-        List<(double pixel, UIElement ele)> measuredAutoList = new(count);
+        foreach (var (pixel, child) in pixelList)
+        {
+            child.Measure(OFToSize((pixel, panelSize.Opposite)));
+            var (_, Opposite) = SizeToOF(child.DesiredSize);
+            if (Opposite > maxOpposite)
+                maxOpposite = Opposite;
+        }
+        panelRemainingSize.Along -= totalAbsolutePixel;
+        totalUsed += totalAbsolutePixel;
+        panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
         foreach (var child in autoList)
         {
-            var measuringSize = OFToSize((remainingSpace, panelSize.Opposite));
-            child.Measure(measuringSize);
-            var desiredSize = SizeToOF(child.DesiredSize);
-            if (desiredSize.Along > remainingSpace) desiredSize.Along = remainingSpace;
-            remainingSpace -= desiredSize.Along;
-            measuredAutoList.Add((desiredSize.Along, child));
+            child.Measure(OFToSize(panelRemainingSize));
+            var (Along, Opposite) = SizeToOF(child.DesiredSize);
+            if (Opposite > maxOpposite)
+                maxOpposite = Opposite;
+            totalUsed += Along;
+            panelRemainingSize.Along -= Along;
+            panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
         }
-
-        if (remainingSpace < 0) remainingSpace = 0;
-
-        double lengthPerStar;
-        if (totalStar is 0)
+        double maxStarSize = 0;
+        foreach (var (star, child) in starList)
         {
-            lengthPerStar = 1;
-        } else
-        {
-            lengthPerStar = remainingSpace / totalStar;
-            remainingSpace = 0;
+            child.Measure(OFToSize(panelRemainingSize));
+            var (Along, Opposite) = SizeToOF(child.DesiredSize);
+            if (Opposite > maxOpposite)
+                maxOpposite = Opposite;
+            var starSize = Along / star;
+            if (starSize > maxStarSize)
+                maxStarSize = starSize;
         }
-        var enumerators = new IEnumerator<(double pixel, UIElement ele)>[] {
-            pixelList.GetEnumerator(),
-            measuredAutoList.GetEnumerator(),
-            starList.Select(x => (pixel: x.star * lengthPerStar, x.ele)).GetEnumerator()
-        };
-        // set all to first position
-        foreach (var enu in enumerators) enu.MoveNext();
-
-        double offset = 0;
+        var computed = maxStarSize * totalStar;
+        panelRemainingSize.Along -= computed;
+        totalUsed += computed;
+        panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
+        var toReturn = OFToSize((totalUsed, Math.Min(maxOpposite, panelSize.Opposite)));
+        return toReturn;
+    }
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+#if DEBUG
+        if (Tag is "Debug")
+            Debugger.Break();
+#endif
+        var orientation = Orientation;
+        (double Along, double Opposite) SizeToOF(Size size) =>
+            orientation is Orientation.Horizontal ?
+            (size.Width, size.Height) : (size.Height, size.Width);
+        Size OFToSize((double Along, double Opposite) of) =>
+            orientation is Orientation.Horizontal ?
+            new(of.Along, of.Opposite) : new(of.Opposite, of.Along);
+        Point OFToPoint((double Along, double Opposite) of) =>
+            orientation is Orientation.Horizontal ?
+            new(of.Along, of.Opposite) : new(of.Opposite, of.Along);
+        var panelSize = SizeToOF(finalSize);
+        var panelRemainingSize = panelSize;
+        double totalAbsolutePixel = 0, totalStar = 0;
         foreach (var child in Children)
         {
-            var enu = enumerators.First(x => x.Current.ele == child);
-            var size = OFToSize((enu.Current.pixel, panelSize.Opposite));
-            child.Measure(size);
-            var desiredSize = SizeToOF(child.DesiredSize);
-            if (desiredSize.Opposite > maxOpposite) maxOpposite = desiredSize.Opposite;
-            if (shouldArrange)
+            var length = GetLength(child);
+            if (length.IsAuto)
             {
-                child.Arrange(
-                    new(
-                        OFToPoint((offset, 0)),
-                        OFToSize((enu.Current.pixel, desiredSize.Opposite))
-                    )
-                );
+                var desiredSize = SizeToOF(child.DesiredSize);
+                totalAbsolutePixel += desiredSize.Along;
             }
-            offset += enu.Current.pixel;
-            enu.MoveNext();
+            else if (length.IsStar)
+            {
+                totalStar += length.Value;
+            }
+            else
+            {
+                totalAbsolutePixel += length.Value;
+            }
         }
-        var along = panelSize.Along - remainingSpace;
-        if (double.IsInfinity(along) || double.IsNaN(along)) along = offset;
-        if (shouldArrange)
-            return OFToSize((along, panelSize.Opposite));
-        else
-            return OFToSize((along, maxOpposite));
+        panelRemainingSize.Along -= totalAbsolutePixel;
+        panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
+        double alongOffset = 0;
+        
+        // To avoid divide by 0
+        if (totalStar is 0) totalStar = 1;
+        var starLength = panelRemainingSize.Along / totalStar;
+        
+        foreach (var child in Children)
+        {
+            var length = GetLength(child);
+            if (length.IsAuto)
+            {
+                var desiredSize = SizeToOF(child.DesiredSize);
+                child.Arrange(new(
+                    OFToPoint((alongOffset, 0)),
+                    OFToSize((desiredSize.Along, panelRemainingSize.Opposite))
+                ));
+                alongOffset += desiredSize.Along;
+                panelRemainingSize.Along -= desiredSize.Along;
+            }
+            else if (length.IsStar)
+            {
+                var computedLength = starLength * length.Value;
+                child.Arrange(new(
+                    OFToPoint((alongOffset, 0)),
+                    OFToSize((computedLength, panelRemainingSize.Opposite))
+                ));
+                alongOffset += computedLength;
+                panelRemainingSize.Along -= computedLength;
+            }
+            else
+            {
+                child.Arrange(new(
+                    OFToPoint((alongOffset, 0)),
+                    OFToSize((length.Value, panelRemainingSize.Opposite))
+                ));
+                alongOffset += length.Value;
+                panelRemainingSize.Along -= length.Value;
+            }
+        }
+        panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
+
+        return OFToSize((panelSize.Along - panelRemainingSize.Along, Math.Min(panelRemainingSize.Opposite, panelSize.Opposite)));
     }
 }
