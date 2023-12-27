@@ -1,6 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:trig="using:Get.UI.StateTriggers"
     xmlns:guis="using:Get.UI.Controls"
     xmlns:tabs="using:Get.UI.Controls.Tabs"
     xmlns:pans="using:Get.UI.Controls.Panels"
@@ -10,12 +11,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="tabs:TabItem">
-                        <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="45" BorderThickness="1,1,1,1">
-                            <Border.RenderTransform>
-                                <CompositeTransform x:Name="RootTransform"/>
-                            </Border.RenderTransform>
-                            <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Selection">
+                    <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="45" BorderThickness="1,1,1,1">
+                        <Border.RenderTransform>
+                            <CompositeTransform x:Name="RootTransform"/>
+                        </Border.RenderTransform>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="Main">
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
@@ -49,33 +50,57 @@
                                         <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
                                     </VisualState.Setters>
                                 </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Border.Resources>
-                                <Storyboard x:Name="TranslationResetStoryboard">
-                                    <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
-                                        <DoubleAnimation.EasingFunction>
-                                            <ExponentialEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateY">
-                                        <DoubleAnimation.EasingFunction>
-                                            <ExponentialEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                                <Storyboard x:Name="AnimatingTranslationStoryboard">
-                                    <DoubleAnimation x:Name="AnimatingTranslateX" Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
-                                        <DoubleAnimation.EasingFunction>
-                                            <ExponentialEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                    <DoubleAnimation x:Name="AnimatingTranslateY" Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateY">
-                                        <DoubleAnimation.EasingFunction>
-                                            <ExponentialEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="OrientationStyle">
+                                <VisualState x:Name="Horizontal">
+                                    <VisualState.StateTriggers>
+                                        <trig:OrientationStateTrigger
+                                            Value1="{Binding TabOrientationStyle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                            Value2="Horizontal"
+                                        />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.CornerRadius" Value="8, 8, 0, 0"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Vertical">
+                                    <VisualState.StateTriggers>
+                                        <trig:OrientationStateTrigger
+                                            Value1="{Binding TabOrientationStyle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                            Value2="Vertical"
+                                        />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.CornerRadius" Value="8, 0, 0, 8"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border.Resources>
+                            <Storyboard x:Name="TranslationResetStoryboard">
+                                <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateY">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                            <Storyboard x:Name="AnimatingTranslationStoryboard">
+                                <DoubleAnimation x:Name="AnimatingTranslateX" Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation x:Name="AnimatingTranslateY" Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateY">
+                                    <DoubleAnimation.EasingFunction>
+                                        <ExponentialEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
                         </Border.Resources>
                         <Grid>
                             <Border x:Name="BackgroundPlace" Margin="10, 0, 10, 0" CornerRadius="8, 8, 0, 0">
