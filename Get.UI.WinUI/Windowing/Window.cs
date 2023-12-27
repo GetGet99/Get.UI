@@ -7,15 +7,13 @@ namespace Get.UI.Windowing;
 
 public class WindowAppWindow : Window
 {
-    bool IsSettingRootContentAllowed;
     public AppWindow AppWindow { get; }
     public override object PlatformWindow { get; }
     public override UIElement RootContent
     {
-        get => XamlRoot.Content;
+        get => SelfNote.ThrowNotImplemented<UIElement>();
         set => SelfNote.ThrowNotImplemented();
     }
-    public override XamlRoot XamlRoot { get; }
     public override Rect Bounds
     {
         get
@@ -28,9 +26,10 @@ public class WindowAppWindow : Window
             AppWindow.MoveAndResize(new((int)value.X, (int)value.Y, (int)value.Width, (int)value.Height));
         }
     }
-    internal WindowAppWindow(XamlRoot xamlRoot)
+    public override XamlRoot XamlRoot { get; }
+    internal WindowAppWindow(nint hwnd, XamlRoot xamlRoot)
     {
-        PlatformWindow = AppWindow = AppWindow.GetFromWindowId(xamlRoot.ContentIslandEnvironment.AppWindowId);
+        PlatformWindow = AppWindow = AppWindow.GetFromWindowId(new((ulong)hwnd));
         XamlRoot = xamlRoot;
     }
     public override void Close() => WinWrapper.Windowing.Window.FromWindowHandle(WindowHandle).TryClose();
@@ -111,21 +110,22 @@ public class WindowXAMLWindow : WindowAppWindow
     public override Microsoft.UI.Xaml.Window PlatformWindow { get; }
     public override UIElement RootContent
     {
-        get => base.RootContent;
+        get => PlatformWindow.Content;
         set => PlatformWindow.Content = IsSettingRootContentAllowed ? value : throw new NotSupportedException();
     }
     internal WindowXAMLWindow(Microsoft.UI.Xaml.Window window, bool isSettingRootContentAllowed = true)
-        : base(window.Content.XamlRoot)
+        : base((nint)window.AppWindow.Id.Value, null!)
     {
         PlatformWindow = window;
         IsSettingRootContentAllowed = isSettingRootContentAllowed;
     }
+    public override XamlRoot XamlRoot => PlatformWindow.Content.XamlRoot;
 }
 partial class Window
 {
     public static Window GetFromXamlRoot(XamlRoot root)
     {
-        return new WindowAppWindow(root);
+        return new WindowAppWindow((nint)root.ContentIslandEnvironment.AppWindowId.Value, root);
     }
     public static Window GetFromPlatformWindow(Microsoft.UI.Xaml.Window window, bool isSettingRootContentAllowed = true)
     {
@@ -133,7 +133,7 @@ partial class Window
     }
     public static Window Create()
     {
-        return GetFromPlatformWindow(new());
+        return GetFromPlatformWindow(new() { Content = new Grid { } });
     }
     public static Task<Window> CreateAsync() => Task.FromResult(Create());
 }
