@@ -23,7 +23,6 @@ public class MotionDragConnectionContext
                     continue;
                 }
                 var rect = globalRect.ContainerRectToScreen;
-                if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
                 if (rect.Contains(mousePos) && receiver.IsVisibleAt(mousePos.Subtract(receiver.GlobalRectangle.WindowPosOffset)))
                 {
                     CurrentReceiver = receiver;

@@ -31,7 +31,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
     void DragDelta(object? sender, object? item, DragPosition dragPositionIn, ref Point itemOffset)
     {
         var dragPosition = dragPositionIn.ToNewContainer(GlobalRectangle);
-        SnapDrag(dragPosition, ref itemOffset);
+        SnapDrag(dragPosition, dragPositionIn, ref itemOffset);
         AnimationController.ShiftAmount =
             ReorderOrientation is Orientation.Horizontal ?
             dragPosition.OriginalItemRect.Width :
@@ -142,15 +142,21 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             def.Complete();
         }
     }
-    void SnapDrag(DragPosition dragPosition, ref Point itemOffset)
+    void SnapDrag(DragPosition dragPosition, DragPosition dragPositionOriginal, ref Point itemOffset)
     {
         mousePos = dragPosition.MousePositionToContainer;
         if (mousePos.X > 0 && mousePos.X < ActualWidth && mousePos.Y > 0 && mousePos.Y < ActualHeight)
         {
             if (ReorderOrientation is Orientation.Vertical)
-                itemOffset.X -= dragPosition.CumulativeTranslation.X;
+            {
+                itemOffset.X -= dragPosition.MousePositionToContainer.X - (dragPositionOriginal.MouseOffset.X - dragPositionOriginal.OriginalItemRect.X);
+                if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
+            }
             else
-                itemOffset.Y -= dragPosition.CumulativeTranslation.Y;
+            {
+                itemOffset.Y -= dragPosition.MousePositionToContainer.Y - (dragPositionOriginal.MouseOffset.Y - dragPositionOriginal.OriginalItemRect.Y);
+                if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
+            }
         }
         //if (InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift) is Windows.UI.Core.CoreVirtualKeyStates.Down)
         //    Debugger.Break();

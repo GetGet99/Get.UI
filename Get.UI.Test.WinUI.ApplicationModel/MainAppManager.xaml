@@ -31,4 +31,9 @@
             </StackPanel>
         </DataTemplate>
     </local:TypedAppManager.ContentTemplate>
+    <local:TypedAppManager.HeaderTemplate>
+        <DataTemplate x:DataType="tabbed:TabbedWindowModel">
+            <Button Content="Swap" Click="Button_Click" Tag="{x:Bind}"/>
+        </DataTemplate>
+    </local:TypedAppManager.HeaderTemplate>
 </local:TypedAppManager>

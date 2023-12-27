@@ -80,7 +80,14 @@
                         <Grid>
                             <Border x:Name="BackgroundPlace" Margin="10, 0, 10, 0" CornerRadius="8, 8, 0, 0">
                                 <pans:OrientedStack Orientation="Horizontal">
-                                    <ContentControl Content="{TemplateBinding Content}" MinWidth="150" Foreground="White" Margin="10,5,5,5" pans:OrientedStack.Length="Auto" CornerRadius="4, 4, 0, 0"/>
+                                    <ContentControl
+                                        Content="{TemplateBinding Content}"
+                                        MinWidth="150"
+                                        Foreground="White"
+                                        Margin="10,5,5,5"
+                                        pans:OrientedStack.Length="Auto"
+                                        CornerRadius="4, 4, 0, 0"
+                                    />
                                     <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Grid.Column="1" pans:OrientedStack.Length="Auto" Padding="0" Width="35" Margin="0, 5, 5, 5">
                                         <SymbolIcon Symbol="Clear" RenderTransformOrigin="0.5, 0.5">
                                             <SymbolIcon.RenderTransform>

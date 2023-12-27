@@ -27,7 +27,7 @@
                         EndInset="{TemplateBinding EndInset}"
                     >
                         <ScrollViewer x:Name="ContainerAreaScrollViewer" HorizontalAlignment="Left">
-                            <StackPanel Orientation="{TemplateBinding Orientation}">
+                            <pans:OrientedStack Orientation="{TemplateBinding Orientation}">
                                 <ctns:MotionDragSelectableContainer
                                     x:Name="Container"
                                     MinWidth="100"
@@ -50,7 +50,7 @@
                                 >
                                     <SymbolIcon>Add</SymbolIcon>
                                 </Button>
-                            </StackPanel>
+                            </pans:OrientedStack>
                         </ScrollViewer>
                     </guis:HeaderFooterContent>
                 </ControlTemplate>

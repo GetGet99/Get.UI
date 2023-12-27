@@ -5,7 +5,7 @@
 		<RootNamespace>Get.UI</RootNamespace>
 		<RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
 		<UseWinUI>true</UseWinUI>
-		<LangVersion>preview</LangVersion>
+		<LangVersion>12</LangVersion>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
@@ -14,7 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Interop.UIAutomationClient" Version="10.19041.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.230907" />
 		<PackageReference Include="Get.EasyCSharp.Generator" Version="1.2.0" />
 		<PackageReference Include="Get.XAMLTools.Generator" Version="1.0.5" />

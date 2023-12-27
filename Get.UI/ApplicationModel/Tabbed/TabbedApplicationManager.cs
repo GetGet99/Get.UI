@@ -106,9 +106,11 @@ class ActionCommand(Action<object?> act) : ICommand
 #else
 [DependencyProperty<SystemBackdrop>("SystemBackdrop")]
 #endif
+[DependencyProperty<DataTemplate>("HeaderTemplate")]
 [DependencyProperty<DataTemplate>("WindowTemplate")]
 [DependencyProperty<DataTemplate>("ItemTemplate")]
 [DependencyProperty<DataTemplate>("ContentTemplate")]
+[DependencyProperty<DataTemplate>("ToolbarTemplate")]
 [DependencyProperty<MotionDragConnectionContext>("ConnectionContext", GenerateLocalOnPropertyChangedMethod = true)]
 public abstract partial class TabbedApplicationManager : DependencyObject
 {
@@ -118,6 +120,7 @@ public abstract partial class TabbedApplicationManager : DependencyObject
         WindowTemplate = DefaultTemplates.Singleton.TabWindowTemplate;
         ItemTemplate = DefaultTemplates.Singleton.TabItemTemplate;
         ContentTemplate = DefaultTemplates.Singleton.TabContentTemplate;
+        ToolbarTemplate = HeaderTemplate = DefaultTemplates.Singleton.EmptyTemplate;
     }
     public IReadOnlyList<TabbedWindowModel> Windows { get; }
     public Task<TabbedWindowModel> CreateNewWindow() => CreateNewWindowImplementAsync();
