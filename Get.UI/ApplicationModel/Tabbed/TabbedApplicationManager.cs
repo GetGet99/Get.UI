@@ -151,6 +151,10 @@ public abstract partial class TabbedApplicationManager : DependencyObject
                 model.Window.Bounds =
                     model.Window.Bounds with { X = mousePos.X, Y = mousePos.Y };
             model.Window.Activate();
+#if WINDOWS_UWP
+            // fix the bug where when we drop the new window does not appear
+            await Task.Delay(100);
+#endif
             def.Complete();
         }
     }

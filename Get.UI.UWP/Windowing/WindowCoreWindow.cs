@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Internal;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 using WinRT;
 
@@ -71,7 +72,19 @@ public class WindowCoreWindow : Window
         set => CoreApplicationView.TitleBar.ExtendViewIntoTitleBar = value;
     }
     public override nint WindowHandle => window.As<ICoreWindowInterop>().WindowHandle;
-    public override void Close() => window.Close();
+    public override void Close()
+    {
+        if (CoreApplicationView.IsMain)
+        {
+            // if same calling thread
+            if (CoreWindow == CoreWindow.GetForCurrentThread())
+                _ = ApplicationView.GetForCurrentView().TryConsolidateAsync();
+        }
+        else
+        {
+            window.Close();
+        }
+    }
     EventHandler? _Closed;
     DefferalCanceledEventHandler? _Closing;
     public override event EventHandler Closed

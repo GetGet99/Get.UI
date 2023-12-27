@@ -25,7 +25,7 @@ public partial class MotionDragContainer : ItemsControl
     internal UIElement? SafeContainerFromIndex(int idx) => idx < 0 ? null : ContainerFromIndex(idx) as UIElement;
     internal int SafeIndexFromContainer(DependencyObject? obj) => obj is null ? -1 : IndexFromContainer(obj);
     //bool DidSetZIndex = false;
-    MotionDragItem CurrentManipulationItem;
+    MotionDragItem? CurrentManipulationItem;
     partial void OnConnectionContextChanged(MotionDragConnectionContext? oldValue, MotionDragConnectionContext? newValue)
     {
         oldValue?.Remove(this);

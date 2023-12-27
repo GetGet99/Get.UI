@@ -6,8 +6,9 @@ using Windows.UI.WindowManagement;
 #endif
 namespace Get.UI.MotionDrag;
 
-public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect ContainerRectToWindow, double RasterizationScale)
+public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect ContainerRectToWindow, double RasterizationScale, bool IsValid = true)
 {
+    public static GlobalContainerRect Invalid => new(default, default, default, IsValid: false);
     public Rect ContainerRectToScreen => new(
         PointToScreen(default),
         ContainerRectToWindow.ToSize()
@@ -54,12 +55,17 @@ public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect Co
         return root.UIContext.As<Windows.Internal.IUIContextPartner>().WindowContext;
     }
 #endif
-    public static GlobalContainerRect GetFromXamlRoot(XamlRoot root, Rect ContainerRect)
-        => new(GetPos(root), ContainerRect, root.RasterizationScale);
+    public static GlobalContainerRect GetFromXamlRoot(XamlRoot? root, Rect ContainerRect)
+    {
+        if (root is null) return Invalid;
+        return new(GetPos(root), ContainerRect, root.RasterizationScale);
+    }
     public static GlobalContainerRect GetFromContainer(UIElement container)
     {
-        var margin = ((FrameworkElement)container.XamlRoot.Content).Margin;
-        var pos = container.TransformToVisual(container.XamlRoot.Content).TransformPoint(
+        var rootElement = container.XamlRoot?.Content as FrameworkElement;
+        if (rootElement is null) return Invalid;
+        var margin = rootElement.Margin;
+        var pos = container.TransformToVisual(rootElement).TransformPoint(
             new(margin.Left, margin.Top)
         );
         var size = container.ActualSize;

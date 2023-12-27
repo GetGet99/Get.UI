@@ -22,11 +22,33 @@
                                         <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
-                                <VisualState x:Name="Deselected">
-                                        <VisualState.Setters>
-                                            <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PointerOverSelected">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PressedSelected">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <Border.Resources>
