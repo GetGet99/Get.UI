@@ -1,6 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:trig="using:Get.UI.StateTriggers"
     xmlns:guis="using:Get.UI.Controls"
     xmlns:tabs="using:Get.UI.Controls.Tabs"
     xmlns:pans="using:Get.UI.Controls.Panels"
@@ -10,41 +11,48 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="tabs:TabItem">
-                        <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="45" BorderThickness="1,1,1,1">
-                            <Border.RenderTransform>
-                                <CompositeTransform x:Name="RootTransform"/>
+                    <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="45" BorderThickness="1,1,1,1">
+                        <Border.RenderTransform>
+                            <CompositeTransform x:Name="RootTransform"/>
                         </Border.RenderTransform>
                         <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Selection">
-                                <VisualState x:Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource ControlFillColorSecondaryBrush}"/>
-                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource ControlElevationBorderBrush}"/>
-                                    </VisualState.Setters>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="BackgroundPlace" Storyboard.TargetProperty="Background" To="{ThemeResource ControlFillColorSecondaryBrush}"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <VisualState.Setters>
-                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
-                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource ControlElevationBorderBrush}"/>
-                                    </VisualState.Setters>
-                                </VisualState>
+                            <VisualStateGroup x:Name="Main">
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
                                         <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
-                                <VisualState x:Name="Deselected">
+                                <VisualState x:Name="PointerOver">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
                                     </VisualState.Setters>
                                 </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Border.Resources>
+                                <VisualState x:Name="PointerOverSelected">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PressedSelected">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Deselected">
+                                        <VisualState.Setters>
+                                            <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border.Resources>
                                 <Storyboard x:Name="TranslationResetStoryboard">
                                     <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
                                         <DoubleAnimation.EasingFunction>
@@ -73,7 +81,15 @@
                         <Grid>
                             <Border x:Name="BackgroundPlace" Margin="10, 0, 10, 0" CornerRadius="8, 8, 0, 0">
                                 <pans:OrientedStack Orientation="Horizontal">
-                                    <ContentControl Content="{TemplateBinding Content}" MinWidth="150" Foreground="White" Margin="10,5,5,5" pans:OrientedStack.Length="Auto" CornerRadius="4, 4, 0, 0"/>
+                                    <ContentControl
+                                        Content="{TemplateBinding Content}"
+                                        MinWidth="150"
+                                        Foreground="White"
+                                        Margin="10,5,5,5"
+                                        pans:OrientedStack.Length="Auto"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4, 4, 0, 0"
+                                    />
                                     <Button x:Name="CloseButton" Background="Transparent" BorderBrush="Transparent" Grid.Column="1" pans:OrientedStack.Length="Auto" Padding="0" Width="35" Margin="0, 5, 5, 5">
                                         <SymbolIcon Symbol="Clear" RenderTransformOrigin="0.5, 0.5">
                                             <SymbolIcon.RenderTransform>

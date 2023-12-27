@@ -4,6 +4,7 @@ using System.Windows.Input;
 
 namespace Get.UI.Controls.Tabs;
 [DependencyProperty<ICommand>("CloseButtonCommand", UseNullableReferenceType = true)]
+[DependencyProperty<Orientation>("TabOrientationStyle")]
 public partial class TabItem : MotionDragSelectableItem
 {
     Button CloseButton => (Button)GetTemplateChild(nameof(CloseButton));
@@ -16,7 +17,17 @@ public partial class TabItem : MotionDragSelectableItem
             if (CloseButtonCommand is not null && CloseButtonCommand.CanExecute(e))
                 CloseButtonCommand.Execute(e);
         };
+        Loaded += TabItem_Loaded;
     }
+
+    private void TabItem_Loaded(object sender, RoutedEventArgs e)
+    {
+        var targetOrientation = Owner?.Orientation ?? Orientation.Horizontal;
+        // required so that state trigger works
+        TabOrientationStyle = targetOrientation is Orientation.Vertical ? Orientation.Horizontal : Orientation.Vertical;
+        TabOrientationStyle = targetOrientation;
+    }
+
     protected override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

@@ -18,11 +18,14 @@
                     ItemsSource="{x:Bind TabItems}"
                     PrimarySelectedIndex="{x:Bind PrimarySelectedIndex,Mode=TwoWay}"
                     Canvas.ZIndex="1"
-                    TitleBarLeftInset="{x:Bind Window.TitleBarLeftInset}"
-                    TitleBarRightInset="{x:Bind Window.TitleBarRightInset}"
-                    ItemTemplate="{x:Bind Manager.ItemTemplate}"
-                    ContentTemplate="{x:Bind Manager.ContentTemplate}"
-                    AddTabCommand="{x:Bind AddTabCommand}"
+                    TitleBarLeftInset="{x:Bind Window.TitleBarLeftInset,Mode=OneWay}"
+                    TitleBarRightInset="{x:Bind Window.TitleBarRightInset,Mode=OneWay}"
+                    ItemTemplate="{x:Bind Manager.ItemTemplate,Mode=OneWay}"
+                    ContentTemplate="{x:Bind Manager.ContentTemplate,Mode=OneWay}"
+                    ToolbarTemplate="{x:Bind Manager.ToolbarTemplate,Mode=OneWay}"
+                    AddTabCommand="{x:Bind AddTabCommand,Mode=OneWay}"
+                    Header="{x:Bind}"
+                    HeaderTemplate="{x:Bind Manager.HeaderTemplate,Mode=OneWay}"
                 >
                 </tabs:TabView>
             </guis:DragRegion>
@@ -33,6 +36,9 @@
         </DataTemplate>
         <DataTemplate x:Name="TabContentTemplate" x:FieldModifier="Public">
             <TextBox Text="Hi! Welcome to the new Tab app. Be sure to set the ItemTemplate and ContentTemplate to replace these default text!"/>
+        </DataTemplate>
+        <DataTemplate x:Name="EmptyTemplate" x:FieldModifier="Public">
+            
         </DataTemplate>
     </Page.Resources>
 </Page>

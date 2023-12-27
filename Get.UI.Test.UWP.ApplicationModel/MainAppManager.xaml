@@ -1,8 +1,8 @@
 ﻿<local:TypedAppManager
-    x:Class="Get.UI.Test.WinUI.ApplicationModel.MainAppManager"
+    x:Class="Get.UI.Test.UWP.ApplicationModel.MainAppManager"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Get.UI.Test.WinUI.ApplicationModel"
+    xmlns:local="using:Get.UI.Test.UWP.ApplicationModel"
     xmlns:tabbed="using:Get.UI.ApplicationModel.Tabbed"
     xmlns:tabs="using:Get.UI.Controls.Tabs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,9 +10,6 @@
     xmlns:guis="using:Get.UI.Controls"
     mc:Ignorable="d"
 >
-    <local:TypedAppManager.SystemBackdrop>
-        <MicaBackdrop/>
-    </local:TypedAppManager.SystemBackdrop>
     <local:TypedAppManager.ItemTemplate>
         <DataTemplate x:DataType="x:String">
             <tabs:TabItem Content="{x:Bind}" guis:DragRegion.Clickable="True">
@@ -31,9 +28,4 @@
             </StackPanel>
         </DataTemplate>
     </local:TypedAppManager.ContentTemplate>
-    <local:TypedAppManager.HeaderTemplate>
-        <DataTemplate x:DataType="tabbed:TabbedWindowModel">
-            <Button Content="Swap" Click="Button_Click" Tag="{x:Bind}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        </DataTemplate>
-    </local:TypedAppManager.HeaderTemplate>
 </local:TypedAppManager>

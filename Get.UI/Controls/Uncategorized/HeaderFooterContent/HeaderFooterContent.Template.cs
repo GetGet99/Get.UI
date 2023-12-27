@@ -17,6 +17,9 @@ partial class HeaderFooterContent
     }
     private Size OnPanelMeasure(Size availableSize)
     {
+#if DEBUG
+        if (Tag is "Debug") Debugger.Break();
+#endif
         var orientation = Orientation;
         (double Along, double Opposite) SizeToOF(Size size) =>
             orientation is Orientation.Horizontal ?
@@ -51,7 +54,7 @@ partial class HeaderFooterContent
                     ContentRequestedSize ?? avalSize.Along
                 ), avalSize.Opposite))
             );
-        var contentSize = SizeToOF(footer.DesiredSize);
+        var contentSize = SizeToOF(content.DesiredSize);
         if (ContentRequestedSize is { } n && n > contentSize.Along) contentSize.Along = n;
         if (contentSize.Opposite > maxOpp) maxOpp = contentSize.Opposite;
         return OFToSize((avalSize.Along, maxOpp));
@@ -59,6 +62,9 @@ partial class HeaderFooterContent
 
     private Size OnPanelArrange(Size finalSize)
     {
+#if DEBUG
+        if (Tag is "Debug") Debugger.Break();
+#endif
         if (HeaderAndInset is not { } header) return finalSize;
         if (ContentAndInline is not { } content) return finalSize;
         if (FooterAndInset is not { } footer) return finalSize;

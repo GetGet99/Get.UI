@@ -1,7 +1,10 @@
-﻿using Get.UI.ApplicationModel.Tabbed;
+﻿using CommunityToolkit.WinUI;
+using Get.UI.ApplicationModel.Tabbed;
 using Get.UI.Controls.Tabs;
-using Get.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 namespace Get.UI.Test.WinUI.ApplicationModel;
 partial class MainAppManager
@@ -10,16 +13,29 @@ partial class MainAppManager
     public MainAppManager()
     {
         InitializeComponent();
-        var window = CreateNewWindow(CreateNewTab(null));
-        window.Window.PlatformWindow.Activate();
+        InitAsync();
     }
-    protected override void OnWindowClosing(Window window)
+    async void InitAsync()
+    {
+        var window = await CreateNewWindowAsync(CreateNewTab(null));
+        window.Window.Activate();
+    }
+    protected override void OnWindowClosing(Windowing.Window window)
     {
         
     }
     protected override string CreateNewTab(object? parameter)
     {
         return $"Item {i++}";
+    }
+
+    private async void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var tabView = (sender as DependencyObject)?.FindAscendant<Get.UI.Controls.Tabs.TabView>();
+        if (tabView is null) return;
+        tabView.Orientation = tabView.Orientation is Orientation.Vertical ? Orientation.Horizontal : Orientation.Vertical;
+        await Task.Delay(100);
+        (sender as DependencyObject)?.FindAscendant<Get.UI.Controls.DragRegion>()?.UpdateRegion();
     }
 }
 class SimpleCloseCommand : ICommand

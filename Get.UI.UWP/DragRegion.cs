@@ -9,6 +9,9 @@ public partial class DragRegion : Grid
 {
     public DragRegion()
     {
+        var grid = new Grid() { Background = new SolidColorBrush(Colors.Transparent) };
+        Canvas.SetZIndex(grid, int.MinValue);
+        Children.Add(grid);
         Loaded += DragRegion_Loaded;
         Unloaded += DragRegion_Unloaded;
     }
@@ -16,18 +19,25 @@ public partial class DragRegion : Grid
     private void DragRegion_Unloaded(object sender, RoutedEventArgs e)
     {
         if (windowContext is CoreWindow)
-            Window.Current.SetTitleBar(null);
+            try
+            {
+                Window.Current.SetTitleBar(null);
+            }
+            catch { }
         else if (windowContext is AppWindow aw)
-            aw.Frame.DragRegionVisuals.Remove(this);
+            try
+            {
+                aw.Frame.DragRegionVisuals.Remove(Children[0]);
+            } catch { }
     }
     object? windowContext;
     private void DragRegion_Loaded(object sender, RoutedEventArgs e)
     {
         windowContext = GlobalContainerRect.GetWindowContext(XamlRoot);
         if (windowContext is CoreWindow)
-            Window.Current.SetTitleBar(this);
+            Window.Current.SetTitleBar(Children[0]);
         else if (windowContext is AppWindow aw)
-            aw.Frame.DragRegionVisuals.Add(this);
+            aw.Frame.DragRegionVisuals.Add(Children[0]);
     }
 
 }

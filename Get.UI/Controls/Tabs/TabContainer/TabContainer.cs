@@ -46,15 +46,12 @@ public partial class TabContainer : Control
         };
     }
     MotionDragSelectableContainer Container => (MotionDragSelectableContainer)GetTemplateChild(nameof(Container));
-    StackPanel StackPanelItemsPanel => (StackPanel)GetTemplateChild(nameof(StackPanelItemsPanel));
     Button AddTabButton => (Button)GetTemplateChild(nameof(AddTabButton));
     ScrollViewer ContainerAreaScrollViewer => (ScrollViewer)GetTemplateChild(nameof(ContainerAreaScrollViewer));
     partial void OnOrientationChanged(Orientation oldValue, Orientation newValue)
     {
-        if (StackPanelItemsPanel is not { } sp) goto nextCategory;
-        sp.Orientation = newValue;
-    nextCategory:
         UpdateScrollView(newValue);
+        UpdateChildOrientation(newValue);
     }
     void UpdateScrollView(Orientation newValue)
     {
@@ -75,14 +72,22 @@ public partial class TabContainer : Control
             }
         }
     }
+    void UpdateChildOrientation(Orientation newValue)
+    {
+        if (Container is not null)
+            for (int i = 0; i < Container.ItemsCount; i++)
+            {
+                if (Container.SafeContainerFromIndex(i)?.FindDescendantOrSelf<TabItem>() is { } tabItem)
+                    tabItem.TabOrientationStyle = newValue;
+            }
+    }
     protected override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        if (StackPanelItemsPanel is not null)
-            StackPanelItemsPanel.Orientation = Orientation;
         AddTabButton.Click += (o, e) => AddTabButtonClicked?.Invoke(o, e);
         AddTabButton.Command = AddTabCommand;
         UpdateScrollView(Orientation);
+        UpdateChildOrientation(Orientation);
     }
     partial void OnAddTabCommandChanged(ICommand? oldValue, ICommand? newValue)
     {

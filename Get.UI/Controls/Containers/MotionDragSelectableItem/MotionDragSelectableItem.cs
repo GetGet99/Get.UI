@@ -50,9 +50,9 @@ public partial class MotionDragSelectableItem : MotionDragItem
                 }
             }
         }
-        OnPointerVisualStateUpdated();
         // Mirror IsSelected for now
         IsSelected = newValue;
+        OnPointerVisualStateUpdated();
     }
     protected override void OnPointerVisualStateUpdated()
     {

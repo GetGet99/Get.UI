@@ -33,11 +33,6 @@ namespace Get.UI.Controls.Tabs;
 //[DependencyProperty<bool>("AllowUserTabGroupping")]
 //[DependencyProperty<TabAlignment>("TabsAlignment")]
 //[DependencyProperty<Visibility>("ToolbarVisibility")]
-
-//[DependencyProperty<DataTemplate>("TabHeaderTemplate")]
-//[DependencyProperty<DataTemplate>("TabFooterTemplate")]
-//[DependencyProperty<DataTemplate>("TabInlineHeaderTemplate")]
-//[DependencyProperty<DataTemplate>("TabInlineFooterTemplate")]
 public partial class TabView : Control
 {
     public TabView()

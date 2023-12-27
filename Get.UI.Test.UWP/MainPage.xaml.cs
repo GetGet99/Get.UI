@@ -54,13 +54,13 @@ namespace Get.UI.Test.UWP
                 TabView.ConnectionContext.DroppedOutside += ConnectionContext_DroppedOutside;
             }
         }
-        public MainPage(Get.UI.MotionDrag.MotionDragConnectionContext connectionContext) : this()
+        public MainPage(MotionDragConnectionContext connectionContext) : this()
         {
             TabView.ConnectionContext = connectionContext;
             // mica not supported thanks to appwindow
             Background = new SolidColorBrush(Color.FromArgb(255, 32, 32, 32));
         }
-        public MainPage(Get.UI.MotionDrag.MotionDragConnectionContext connectionContext, TabWrapper tw) : this(connectionContext)
+        public MainPage(MotionDragConnectionContext connectionContext, TabWrapper tw) : this(connectionContext)
         {
             Strings.Clear();
             Strings.Add(tw);

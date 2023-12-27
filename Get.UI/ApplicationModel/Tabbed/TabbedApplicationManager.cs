@@ -1,7 +1,9 @@
 using Get.UI.MotionDrag;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.WindowManagement;
 
 namespace Get.UI.ApplicationModel.Tabbed;
 [DependencyProperty<bool>("AllowEmptyWindow", DefaultValueExpression = "false")]
@@ -27,24 +29,36 @@ public abstract partial class TabbedApplicationManager<T> : TabbedApplicationMan
 
     public event PropertyChangedEventHandler? PropertyChanged;
     public new ReadOnlyObservableCollection<TabbedWindowModel<T>> Windows { get; }
-    public TabbedWindowModel<T> CreateNewWindow(T newTab)
+    public async Task<TabbedWindowModel<T>> CreateNewWindowAsync(T newTab)
     {
-        var model = CreateNewWindow();
+        var model = await CreateNewWindowAsync();
         model.TabItems.Add(newTab);
         _windows.Add(model);
         return model;
     }
 
-    public new TabbedWindowModel<T> CreateNewWindow()
+    public async Task<TabbedWindowModel<T>> CreateNewWindowAsync()
     {
+        var window = await Windowing.Window.CreateAsync();
+        return MakeTabWindowModel(window);
+    }
+    public TabbedWindowModel<T> MakeTabWindowModel(Windowing.Window newEmptyWindow, T newTab)
+    {
+        var model = MakeTabWindowModel(newEmptyWindow);
+        model.TabItems.Add(newTab);
+        _windows.Add(model);
+        return model;
+    }
+    public TabbedWindowModel<T> MakeTabWindowModel(Windowing.Window newEmptyWindow)
+    {
+        var model = new TabbedWindowModel<T>(this, newEmptyWindow);
+        newEmptyWindow.ExtendsContentIntoTitleBar = true;
 #if WINDOWS_UWP
-        throw new NotImplementedException();
 #else
-        var window = new Windowing.Window(new(), isSettingRootContentAllowed: false);
-        var model = new TabbedWindowModel<T>(this, window);
-        window.PlatformWindow.ExtendsContentIntoTitleBar = true;
-        window.PlatformWindow.SystemBackdrop = SystemBackdrop;
-        window.PlatformWindow.Content = new TabbedPage(this, model);
+        var platformWindow = (Microsoft.UI.Xaml.Window)newEmptyWindow.PlatformWindow;
+        platformWindow.SystemBackdrop = SystemBackdrop;
+#endif
+        newEmptyWindow.RootContent = new TabbedPage(this, model);
         model.TabItems.CollectionChanged += delegate
         {
             if (model.TabItems.Count is 0 && !AllowEmptyWindow)
@@ -52,24 +66,23 @@ public abstract partial class TabbedApplicationManager<T> : TabbedApplicationMan
                 model.Window.Close();
             }
         };
-        window.PlatformWindow.Closed += delegate
+        newEmptyWindow.Closed += delegate
         {
-            if (model.TabItems.Count > 0)
-                model.TabItems.Clear();
+            //if (model.TabItems.Count > 0)
+            //    model.TabItems.Clear();
             _windows.Remove(model);
         };
-        window.PlatformWindow.AppWindow.Closing += delegate
+        newEmptyWindow.Closing += (o, e) =>
         {
             
         };
         _windows.Add(model);
         return model;
-#endif
     }
-    internal override TabbedWindowModel CreateNewWindowImplement()
-        => CreateNewWindow();
-    internal override TabbedWindowModel CreateNewWindowImplement(object tabModel)
-        => CreateNewWindow((T)tabModel);
+    internal override async Task<TabbedWindowModel> CreateNewWindowImplementAsync()
+        => await CreateNewWindowAsync();
+    internal override async Task<TabbedWindowModel> CreateNewWindowImplementAsync(object tabModel)
+        => await CreateNewWindowAsync((T)tabModel);
     protected abstract void OnWindowClosing(Windowing.Window window);
     protected abstract T CreateNewTab(object? parameter);
     internal override void InternalAddTab(TabbedWindowModel model, object? parameter)
@@ -93,9 +106,11 @@ class ActionCommand(Action<object?> act) : ICommand
 #else
 [DependencyProperty<SystemBackdrop>("SystemBackdrop")]
 #endif
+[DependencyProperty<DataTemplate>("HeaderTemplate")]
 [DependencyProperty<DataTemplate>("WindowTemplate")]
 [DependencyProperty<DataTemplate>("ItemTemplate")]
 [DependencyProperty<DataTemplate>("ContentTemplate")]
+[DependencyProperty<DataTemplate>("ToolbarTemplate")]
 [DependencyProperty<MotionDragConnectionContext>("ConnectionContext", GenerateLocalOnPropertyChangedMethod = true)]
 public abstract partial class TabbedApplicationManager : DependencyObject
 {
@@ -105,11 +120,12 @@ public abstract partial class TabbedApplicationManager : DependencyObject
         WindowTemplate = DefaultTemplates.Singleton.TabWindowTemplate;
         ItemTemplate = DefaultTemplates.Singleton.TabItemTemplate;
         ContentTemplate = DefaultTemplates.Singleton.TabContentTemplate;
+        ToolbarTemplate = HeaderTemplate = DefaultTemplates.Singleton.EmptyTemplate;
     }
     public IReadOnlyList<TabbedWindowModel> Windows { get; }
-    public TabbedWindowModel CreateNewWindow() => CreateNewWindowImplement();
-    internal abstract TabbedWindowModel CreateNewWindowImplement();
-    internal abstract TabbedWindowModel CreateNewWindowImplement(object tabModel);
+    public Task<TabbedWindowModel> CreateNewWindow() => CreateNewWindowImplementAsync();
+    internal abstract Task<TabbedWindowModel> CreateNewWindowImplementAsync();
+    internal abstract Task<TabbedWindowModel> CreateNewWindowImplementAsync(object tabModel);
     partial void OnConnectionContextChanged(MotionDragConnectionContext oldValue, MotionDragConnectionContext newValue)
     {
         if (oldValue is not null)
@@ -122,28 +138,27 @@ public abstract partial class TabbedApplicationManager : DependencyObject
         }
     }
 
-    private void ConnectionContext_DroppedOutside(object? sender, object? item, DragPosition dragPosition, DropManager dropManager)
+    private async void ConnectionContext_DroppedOutside(object? sender, object? item, DragPosition dragPosition, DropManager dropManager)
     {
-#if WINDOWS_UWP
-        throw new NotImplementedException();
-#else
         dropManager.ShouldItemBeRemovedFromHost = true;
         if (item is not null)
         {
-            var model = CreateNewWindowImplement(item);
+            var def = dropManager.GetDeferral();
+            var model = await CreateNewWindowImplementAsync(item);
             var mousePos = dragPosition.MousePositionToScreen;
             if (sender is UIElement ele)
                 model.Window.Bounds =
-                        WinWrapper.Windowing.Window
-                        .FromWindowHandle(GlobalContainerRect.GetHwnd(ele.XamlRoot))
-                        .Bounds with
-                        { X = (int)mousePos.X, Y = (int)mousePos.Y };
+                        Windowing.Window.GetFromXamlRoot(ele.XamlRoot).Bounds with
+                        { X = mousePos.X, Y = mousePos.Y };
             else
                 model.Window.Bounds =
-                    model.Window.Bounds with { X = (int)mousePos.X, Y = (int)mousePos.Y };
-            model.Window.PlatformWindow.Activate();
+                    model.Window.Bounds with { X = mousePos.X, Y = mousePos.Y };
+            model.Window.Activate();
+            // UWP: fix the bug where when we drop the new window does not appear
+            // WinUI: attempted to fix the bug where dragging and dropping to create new window almost immedietely will froze the app
+            await Task.Delay(100);
+            def.Complete();
         }
-#endif
     }
     internal abstract void InternalAddTab(TabbedWindowModel model, object? parameter);
 }
