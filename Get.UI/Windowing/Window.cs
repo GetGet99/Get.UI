@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace Get.UI.Windowing;
 
 public abstract partial class Window
