@@ -1,9 +1,11 @@
 ﻿<Application
-    x:Class="Get.UI.Test.UWP.App"
+    x:Class="Get.UI.Test.UWP.ApplicationModel.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Get.UI.Test.UWP.ApplicationModel"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:gui="using:Get.UI">
+    xmlns:gui="using:Get.UI"
+    >
     <Application.Resources>
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>

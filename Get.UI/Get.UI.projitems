@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\Converter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\FuncConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Deferral.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeferralCanceledEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AutoOrientationProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DPCEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Extensions.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionEventDelegates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Structs And Enums\OrientationNeutralAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)windowing\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\DefaultTemplates.xaml">
@@ -108,5 +110,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Windowing\" />
   </ItemGroup>
 </Project>

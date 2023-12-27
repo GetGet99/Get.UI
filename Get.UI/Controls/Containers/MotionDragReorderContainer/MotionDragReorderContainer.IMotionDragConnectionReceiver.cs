@@ -13,7 +13,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             (int)ptScreen.X,
             (int)ptScreen.Y
         ).Root == 
-        WinWrapper.Windowing.Window.FromWindowHandle(GlobalContainerRect.GetHwnd(XamlRoot)).Root;
+        WinWrapper.Windowing.Window.FromWindowHandle(Windowing.Window.GetFromXamlRoot(XamlRoot).WindowHandle).Root;
     }
     bool useCached = false; // warning: doesn't work, fix before turning this back to true
     GlobalContainerRect _globalRectangle;

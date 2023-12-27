@@ -1,21 +1,24 @@
 ﻿using Get.UI.ApplicationModel.Tabbed;
 using Get.UI.Controls.Tabs;
 using Get.UI.Windowing;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Windows.Input;
-namespace Get.UI.Test.WinUI.ApplicationModel;
+using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+namespace Get.UI.Test.UWP.ApplicationModel;
 partial class MainAppManager
 {
     int i = 1;
     public MainAppManager()
     {
         InitializeComponent();
-        InitAsync();
-    }
-    async void InitAsync()
-    {
-        var window = await CreateNewWindowAsync(CreateNewTab(null));
+        var window = MakeTabWindowModel(WindowCoreWindow.CurrentThreadCoreWindow, CreateNewTab(null));
         window.Window.Activate();
+        var root = (Page)global::Windows.UI.Xaml.Window.Current.Content;
+        root.Background = new SolidColorBrush(Color.FromArgb(255, 20, 20, 20));
     }
     protected override void OnWindowClosing(Window window)
     {

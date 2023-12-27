@@ -54,22 +54,6 @@ public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect Co
         return root.UIContext.As<Windows.Internal.IUIContextPartner>().WindowContext;
     }
 #endif
-    internal static nint GetHwnd(XamlRoot root)
-    {
-#if WINDOWS_UWP
-        switch (GetWindowContext(root))
-        {
-            case CoreWindow cw:
-                return cw.As<ICoreWindowInterop>().WindowHandle;
-            case AppWindow aw:
-                return (nint)aw.As<IApplicationWindow_HwndInterop>().WindowHandle.Value;
-        }
-        return default;
-#else
-        var hwnd = root.ContentIslandEnvironment.AppWindowId;
-        return (nint)hwnd.Value;
-#endif
-    }
     public static GlobalContainerRect GetFromXamlRoot(XamlRoot root, Rect ContainerRect)
         => new(GetPos(root), ContainerRect, root.RasterizationScale);
     public static GlobalContainerRect GetFromContainer(UIElement container)
