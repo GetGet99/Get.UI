@@ -80,7 +80,7 @@ public partial class DragRegion : Grid
     }
 
     InputNonClientPointerSource? current;
-    void UpdateRegion()
+    public void UpdateRegion()
     {
         try
         {
