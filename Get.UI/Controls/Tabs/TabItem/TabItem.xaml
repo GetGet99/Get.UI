@@ -119,7 +119,7 @@
                                 </Storyboard>
                         </Border.Resources>
                         <Grid>
-                            <Border x:Name="BackgroundPlace" Margin="6, 0, 6, 0" Height="32" CornerRadius="6, 6, 0, 0">
+                            <Border x:Name="BackgroundPlace" Margin="6, 0, 6, 0" CornerRadius="6, 6, 0, 0">
                                 <pans:OrientedStack Orientation="Horizontal">
                                     <ContentControl
                                         Content="{TemplateBinding Content}"
