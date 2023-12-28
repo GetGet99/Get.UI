@@ -11,11 +11,11 @@ public partial class ValueStateTrigger<T> : StateTriggerBase
     /// <summary>
     /// Identifies the Value1 dependency property.
     /// </summary>
-    public static global::Microsoft.UI.Xaml.DependencyProperty Value1Property = global::Microsoft.UI.Xaml.DependencyProperty.Register(
+    public static DependencyProperty Value1Property = DependencyProperty.Register(
         nameof(Value1),
         typeof(T),
         typeof(global::Get.UI.StateTriggers.ValueStateTrigger<T>),
-        new global::Microsoft.UI.Xaml.PropertyMetadata(
+        new PropertyMetadata(
             default(T),
             static (d, e) => {
                 var @this = ((global::Get.UI.StateTriggers.ValueStateTrigger<T>)d);
@@ -47,11 +47,11 @@ public partial class ValueStateTrigger<T> : StateTriggerBase
     /// <summary>
     /// Identifies the Value2 dependency property.
     /// </summary>
-    public static global::Microsoft.UI.Xaml.DependencyProperty Value2Property = global::Microsoft.UI.Xaml.DependencyProperty.Register(
+    public static DependencyProperty Value2Property = DependencyProperty.Register(
         nameof(Value2),
         typeof(T),
         typeof(global::Get.UI.StateTriggers.ValueStateTrigger<T>),
-        new global::Microsoft.UI.Xaml.PropertyMetadata(
+        new PropertyMetadata(
             default(T),
             static (d, e) => {
                 var @this = ((global::Get.UI.StateTriggers.ValueStateTrigger<T>)d);
