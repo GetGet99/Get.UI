@@ -45,13 +45,43 @@
                                         <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
-                                <VisualState x:Name="Deselected">
+                                <VisualState x:Name="Normal">
                                         <VisualState.Setters>
                                             <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
                                         </VisualState.Setters>
                                     </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="OrientationStyle">
+                                <VisualState x:Name="Horizontal">
+                                    <VisualState.StateTriggers>
+                                        <trig:OrientationStateTrigger
+                                            Value1="{Binding TabOrientationStyle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                            Value2="Horizontal"
+                                        />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <!--<Setter Target="BackgroundPlace.CornerRadius" Value="8, 8, 0, 0"/>
+                                        <Setter Target="BackgroundPlace.Margin" Value="10, 0, 10, 0"/>
+                                        <Setter Target="corner1.HorizontalAlignment" Value="Left"/>
+                                        <Setter Target="corner1.VerticalAlignment" Value="Bottom"/>-->
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Vertical">
+                                    <VisualState.StateTriggers>
+                                        <trig:OrientationStateTrigger
+                                            Value1="{Binding TabOrientationStyle, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                            Value2="Vertical"
+                                        />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <!--<Setter Target="BackgroundPlace.CornerRadius" Value="8, 0, 0, 8"/>
+                                        <Setter Target="BackgroundPlace.Margin" Value="0, 10, 0, 10"/>
+                                        <Setter Target="corner1.HorizontalAlignment" Value="Right"/>
+                                        <Setter Target="corner1.VerticalAlignment" Value="Top"/>-->
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                             <Border.Resources>
                                 <Storyboard x:Name="TranslationResetStoryboard">
                                     <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetName="RootTransform" Storyboard.TargetProperty="TranslateX">
