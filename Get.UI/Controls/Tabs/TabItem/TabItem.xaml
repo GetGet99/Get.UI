@@ -20,29 +20,39 @@
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="corner1.Fill" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="corner2.Fill" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
                                         <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PointerOver">
                                     <VisualState.Setters>
-                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
+                                        <Setter Target="corner1.Fill" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
+                                        <Setter Target="corner2.Fill" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PointerOverSelected">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
                                         <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
+                                        <Setter Target="corner1.Fill" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="corner2.Fill" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <VisualState.Setters>
-                                        <Setter Target="BackgroundPlace.Background" Value="Transparent"/>
+                                        <Setter Target="BackgroundPlace.Background" Value="{ThemeResource ControlFillColorDisabledBrush}"/>
+                                        <Setter Target="corner1.Fill" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
+                                        <Setter Target="corner2.Fill" Value="{ThemeResource ControlFillColorTertiaryBrush}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PressedSelected">
                                     <VisualState.Setters>
                                         <Setter Target="BackgroundPlace.Background" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
                                         <Setter Target="BackgroundPlace.BorderBrush" Value="{ThemeResource TabViewSelectedItemBorderBrush}"/>
+                                        <Setter Target="corner1.Fill" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
+                                        <Setter Target="corner2.Fill" Value="{ThemeResource TabViewItemHeaderBackgroundSelected}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Normal">
@@ -74,10 +84,10 @@
                                         />
                                     </VisualState.StateTriggers>
                                     <VisualState.Setters>
-                                        <!--<Setter Target="BackgroundPlace.CornerRadius" Value="8, 0, 0, 8"/>
-                                        <Setter Target="BackgroundPlace.Margin" Value="0, 10, 0, 10"/>
-                                        <Setter Target="corner1.HorizontalAlignment" Value="Right"/>
-                                        <Setter Target="corner1.VerticalAlignment" Value="Top"/>-->
+                                        <Setter Target="corner1.Visibility" Value="Collapsed"/>
+                                        <Setter Target="corner2.Visibility" Value="Collapsed"/>
+                                        <Setter Target="BackgroundPlace.Margin" Value="0"/>
+                                        <Setter Target="BackgroundPlace.CornerRadius" Value="6"/>
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
@@ -109,7 +119,7 @@
                                 </Storyboard>
                         </Border.Resources>
                         <Grid>
-                            <Border x:Name="BackgroundPlace" Margin="10, 0, 10, 0" CornerRadius="8, 8, 0, 0">
+                            <Border x:Name="BackgroundPlace" Margin="6, 0, 6, 0" Height="32" CornerRadius="6, 6, 0, 0">
                                 <pans:OrientedStack Orientation="Horizontal">
                                     <ContentControl
                                         Content="{TemplateBinding Content}"
@@ -129,8 +139,8 @@
                                     </Button>
                                 </pans:OrientedStack>
                             </Border>
-                            <Path x:Name="corner1" Data="F1 M 0 10 C 5 10 10 5 10 0 L 10 10 Z" Margin="0, 0, 0, 9" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                            <Path x:Name="corner2" Data="F1 M 10 10 C 5 10 0 5 0 0 L 0 10 Z" Margin="0, 0, 0, 9" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <Path x:Name="corner1" Data="F1 M 0 6 C 3 6 6 3 6 0 L 6 6 Z" Margin="0, 0, 0, 5" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <Path x:Name="corner2" Data="F1 M 6 6 C 3 6 0 3 0 0 L 0 6 Z" Margin="0, 0, 0, 5" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
