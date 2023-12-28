@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableItem\MotionDragSelectableItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Internals\CustomizablePanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)controls\panels\LayoutDebugger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\OrientedStackForContainer\OrientedStackForContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\OrientedStack\OrientedStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabContainer\TabContainer.cs" />
