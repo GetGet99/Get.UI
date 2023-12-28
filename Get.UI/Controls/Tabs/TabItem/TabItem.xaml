@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="tabs:TabItem">
-                    <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="45" BorderThickness="1,1,1,1">
+                    <Border Background="Transparent" x:Name="RootElement" BorderBrush="Transparent" MinHeight="35" BorderThickness="1,1,1,1" Margin="0, 0, 0, -1">
                         <Border.RenderTransform>
                             <CompositeTransform x:Name="RootTransform"/>
                         </Border.RenderTransform>
@@ -139,8 +139,8 @@
                                     </Button>
                                 </pans:OrientedStack>
                             </Border>
-                            <Path x:Name="corner1" Data="F1 M 0 6 C 3 6 6 3 6 0 L 6 6 Z" Margin="0, 0, 0, 5" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                            <Path x:Name="corner2" Data="F1 M 6 6 C 3 6 0 3 0 0 L 0 6 Z" Margin="0, 0, 0, 5" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <Path x:Name="corner1" Data="F1 M 0 6 C 3 6 6 3 6 0 L 6 6 Z" Margin="0, 0, 0, 0" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <Path x:Name="corner2" Data="F1 M 6 6 C 3 6 0 3 0 0 L 0 6 Z" Margin="0, 0, 0, 0" Fill="{Binding Background, ElementName=BackgroundPlace}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
