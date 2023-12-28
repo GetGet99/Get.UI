@@ -24,7 +24,7 @@
     </local:TypedAppManager.ItemTemplate>
     <local:TypedAppManager.ContentTemplate>
         <DataTemplate x:DataType="x:String">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Background="Transparent">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{ThemeResource LayerFillColorDefaultBrush}">
                 <TextBlock Text="Hello! You are looking at the tab named"/>
                 <TextBlock Margin="3,0,0,0" Text="{x:Bind}"/>
                 <TextBlock Text="."/>

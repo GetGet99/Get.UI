@@ -9,9 +9,6 @@
     <Import_RootNamespace>Get.UI</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\DefaultTemplates.xaml.cs">
-      <DependentUpon>DefaultTemplates.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\tabbed\TabbedApplicationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\tabbed\TabbedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedWindowModel.cs" />
@@ -114,6 +111,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\DefaultTemplates.xaml.cs">
+      <DependentUpon>DefaultTemplates.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Windowing\" />
