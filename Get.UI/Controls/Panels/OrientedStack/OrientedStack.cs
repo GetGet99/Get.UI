@@ -110,6 +110,10 @@ public partial class OrientedStack : Panel
         totalUsed += computed;
         panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
         var toReturn = OFToSize((totalUsed, Math.Min(maxOpposite, panelSize.Opposite)));
+#if DEBUG
+        if (Tag is "Debug")
+            Debugger.Break();
+#endif
         return toReturn;
     }
     protected override Size ArrangeOverride(Size finalSize)
@@ -191,6 +195,10 @@ public partial class OrientedStack : Panel
         }
         panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
 
+#if DEBUG
+        if (Tag is "Debug")
+            Debugger.Break();
+#endif
         return OFToSize((panelSize.Along - panelRemainingSize.Along, Math.Min(panelRemainingSize.Opposite, panelSize.Opposite)));
     }
 }
