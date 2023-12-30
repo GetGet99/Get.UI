@@ -7,8 +7,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Get.UI", "Get.UI\Get.UI.shp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Get.UI.WinUI", "Get.UI.WinUI\Get.UI.WinUI.csproj", "{2ED0B139-631B-4C9D-A9A6-20306CA0D70B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get.UI.UWP", "Get.UI.UWP\Get.UI.UWP.csproj", "{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CB42497C-A201-4F92-AF95-05236EDD4FF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Get.UI.Test.WinUI", "Get.UI.Test.WinUI\Get.UI.Test.WinUI.csproj", "{363DB6FD-FBDC-40C5-BA46-FFB8725DDAD3}"
@@ -18,6 +16,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Get.UI.Test.WinUI.ApplicationModel", "Get.UI.Test.WinUI.ApplicationModel\Get.UI.Test.WinUI.ApplicationModel.csproj", "{DA5FA4FA-B4DF-49F0-A18C-79D20FE54553}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get.UI.Test.UWP.ApplicationModel", "Get.UI.Test.UWP.ApplicationModel\Get.UI.Test.UWP.ApplicationModel.csproj", "{9C41353E-4AF3-4EBD-95E7-15AD97B41760}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03355603-10FC-4127-B165-8534F74034ED}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Get.UI.UWP", "Get.UI.UWP\Get.UI.UWP.csproj", "{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,26 +58,6 @@ Global
 		{2ED0B139-631B-4C9D-A9A6-20306CA0D70B}.Release|x64.Build.0 = Release|Any CPU
 		{2ED0B139-631B-4C9D-A9A6-20306CA0D70B}.Release|x86.ActiveCfg = Release|Any CPU
 		{2ED0B139-631B-4C9D-A9A6-20306CA0D70B}.Release|x86.Build.0 = Release|Any CPU
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|ARM.ActiveCfg = Debug|ARM
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|ARM.Build.0 = Debug|ARM
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|ARM64.Build.0 = Debug|ARM64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|x64.ActiveCfg = Debug|x64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|x64.Build.0 = Debug|x64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|x86.ActiveCfg = Debug|x86
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Debug|x86.Build.0 = Debug|x86
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|ARM.ActiveCfg = Release|ARM
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|ARM.Build.0 = Release|ARM
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|ARM64.ActiveCfg = Release|ARM64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|ARM64.Build.0 = Release|ARM64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|x64.ActiveCfg = Release|x64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|x64.Build.0 = Release|x64
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|x86.ActiveCfg = Release|x86
-		{DDA2B8AC-BE00-4CB6-920E-01DAD944F2F5}.Release|x86.Build.0 = Release|x86
 		{363DB6FD-FBDC-40C5-BA46-FFB8725DDAD3}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{363DB6FD-FBDC-40C5-BA46-FFB8725DDAD3}.Debug|Any CPU.Build.0 = Debug|x64
 		{363DB6FD-FBDC-40C5-BA46-FFB8725DDAD3}.Debug|Any CPU.Deploy.0 = Debug|x64
@@ -193,6 +178,17 @@ Global
 		{9C41353E-4AF3-4EBD-95E7-15AD97B41760}.Release|x86.ActiveCfg = Release|x86
 		{9C41353E-4AF3-4EBD-95E7-15AD97B41760}.Release|x86.Build.0 = Release|x86
 		{9C41353E-4AF3-4EBD-95E7-15AD97B41760}.Release|x86.Deploy.0 = Release|x86
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Debug|x64.ActiveCfg = Release|x64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Debug|x64.Build.0 = Release|x64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Debug|x86.ActiveCfg = Debug|x86
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Release|Any CPU.ActiveCfg = Release|x64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Release|ARM.ActiveCfg = Release|ARM
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Release|ARM64.ActiveCfg = Release|ARM64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Release|x64.ActiveCfg = Release|x64
+		{D5C1BAD4-0B22-48A8-B4DB-6BC80E92A370}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -209,6 +205,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Get.UI\Get.UI.projitems*{2ed0b139-631b-4c9d-a9a6-20306ca0d70b}*SharedItemsImports = 5
 		Get.UI\Get.UI.projitems*{83dce5db-1b79-4824-a716-2b66351a2a4e}*SharedItemsImports = 13
-		Get.UI\Get.UI.projitems*{dda2b8ac-be00-4cb6-920e-01dad944f2f5}*SharedItemsImports = 4
+		Get.UI\Get.UI.projitems*{d5c1bad4-0b22-48a8-b4db-6bc80e92a370}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

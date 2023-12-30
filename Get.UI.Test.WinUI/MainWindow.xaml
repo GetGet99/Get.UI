@@ -7,37 +7,84 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:guis="using:Get.UI.Controls"
     xmlns:cons="using:Get.UI.Controls.Containers"
+    xmlns:pans="using:Get.UI.Controls.Panels"
     xmlns:tabs="using:Get.UI.Controls.Tabs"
     xmlns:local="using:SmartTabViewTest.WinUI"
+    xmlns:collections="using:System.Collections"
     mc:Ignorable="d">
     <Grid Margin="32">
-        <tabs:TabContainer
+        <Grid.Resources>
+            <DataTemplate x:Key="SelfTagTemplate" x:DataType="FrameworkElement">
+                <TabViewItem Content="{x:Bind Tag}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="SelfTemplate">
+                <ContentPresenter Content="{Binding}"/>
+            </DataTemplate>
+        </Grid.Resources>
+        <tabs:TabView
             x:Name="TabContainer"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Orientation="Vertical"
+            Orientation="Horizontal"
             Alignment="Start"
             TabContainerCenterAlignmentResolvingMode="AlignLeftOrRight"
-            ItemsSource="{x:Bind Strings}"
+            ItemTemplate="{StaticResource SelfTagTemplate}"
+            ContentTemplate="{StaticResource SelfTemplate}"
         >
-            <tabs:TabContainer.Header>
-                <Button Content="Button on header" Margin="0,0,0,0" />
-            </tabs:TabContainer.Header>
-            <tabs:TabContainer.InlineHeader>
-                <Button Content="Button" Margin="0,0,8,0" />
-            </tabs:TabContainer.InlineHeader>
-            <tabs:TabContainer.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <tabs:TabItem Content="{x:Bind}"/>
-                </DataTemplate>
-            </tabs:TabContainer.ItemTemplate>
-            <tabs:TabContainer.InlineFooter>
-                <Button Content="New Window" Margin="0,0,8,0" Click="Button_Click" />
-            </tabs:TabContainer.InlineFooter>
-            <tabs:TabContainer.Footer>
-                <Button Content="Button on footer" Margin="0,0,0,0" />
-            </tabs:TabContainer.Footer>
-        </tabs:TabContainer>
+            <tabs:TabView.ItemsSource>
+                <local:XamlList>
+                    <tabs:TabView
+                        Tag="Tabs"
+                        Orientation="Vertical"
+            ItemTemplate="{StaticResource SelfTagTemplate}"
+            ContentTemplate="{StaticResource SelfTemplate}"
+                    >       
+                        <tabs:TabView.ItemsSource>
+                            <local:XamlList>
+                                <TextBox Text="Hello From Tab 1" Tag="Tab 1"/>
+                                <TextBox Text="Hello From Tab 2" Tag="Tab 2"/>
+                                <TextBox Text="Hello From Tab 3" Tag="Tab 3"/>
+                                <TextBox Text="Hello From Tab 4" Tag="Tab 4"/>
+                                <TextBox Text="Hello From Tab 5" Tag="Tab 5"/>
+                            </local:XamlList>
+                        </tabs:TabView.ItemsSource>
+
+                    </tabs:TabView>
+                    <pans:OrientedStack Tag="Or Multiple Tabs?">
+                        <tabs:TabView
+                            Orientation="Vertical"
+            ItemTemplate="{StaticResource SelfTagTemplate}"
+            ContentTemplate="{StaticResource SelfTemplate}"
+                        >
+                            <tabs:TabView.ItemsSource>
+                                <local:XamlList>
+                                    <TextBox Text="Hello From Tab 6" Tag="Tab 6"/>
+                                    <TextBox Text="Hello From Tab 7" Tag="Tab 7"/>
+                                    <TextBox Text="Hello From Tab 8" Tag="Tab 8"/>
+                                    <TextBox Text="Hello From Tab 9" Tag="Tab 9"/>
+                                    <TextBox Text="Hello From Tab 10" Tag="Tab 10"/>
+                                </local:XamlList>
+                            </tabs:TabView.ItemsSource>
+
+                        </tabs:TabView>
+                        <tabs:TabView
+                            Orientation="Vertical"
+            ItemTemplate="{StaticResource SelfTagTemplate}"
+            ContentTemplate="{StaticResource SelfTemplate}"
+                        >
+                            <tabs:TabView.ItemsSource>
+                                <local:XamlList>
+                                    <TextBox Text="Hello From Tab 11" Tag="Tab 11"/>
+                                    <TextBox Text="Hello From Tab 12" Tag="Tab 12"/>
+                                    <TextBox Text="Hello From Tab 13" Tag="Tab 13"/>
+                                    <TextBox Text="Hello From Tab 14" Tag="Tab 14"/>
+                                    <TextBox Text="Hello From Tab 15" Tag="Tab 15"/>
+                                </local:XamlList>
+                            </tabs:TabView.ItemsSource>
+
+                        </tabs:TabView>
+                    </pans:OrientedStack>
+                </local:XamlList>
+            </tabs:TabView.ItemsSource>
+        </tabs:TabView>
         <!--
     <StackPanel Orientation="Horizontal" Spacing="16" Margin="32">
         <stc:SmartTabContainer

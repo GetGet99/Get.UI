@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
@@ -48,5 +49,8 @@ namespace SmartTabViewTest.WinUI
         {
             new MainWindow(TabContainer.ConnectionContext).Activate();
         }
+    }
+    public class XamlList : List<object>
+    {
     }
 }

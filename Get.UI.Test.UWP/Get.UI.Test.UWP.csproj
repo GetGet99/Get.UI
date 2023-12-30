@@ -166,7 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Get.UI.UWP\Get.UI.UWP.csproj">
-      <Project>{dda2b8ac-be00-4cb6-920e-01dad944f2f5}</Project>
+      <Project>{d5c1bad4-0b22-48a8-b4db-6bc80e92a370}</Project>
       <Name>Get.UI.UWP</Name>
     </ProjectReference>
   </ItemGroup>
