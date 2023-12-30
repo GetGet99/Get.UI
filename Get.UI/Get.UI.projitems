@@ -9,11 +9,16 @@
     <Import_RootNamespace>Get.UI</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\tabbed\TabbedApplicationManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\tabbed\TabbedPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\DefaultTemplates.xaml.cs">
+      <DependentUpon>DefaultTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedApplicationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedWindowModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ControlsResources.xaml.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)controls\containers\ISelectableContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ControlsResources.xaml.cs">
+      <DependentUpon>ControlsResources.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\ISelectableContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.AnimatingTranslation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragItem\MotionDragItem.Manipulation.cs" />
@@ -24,7 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Containers\MotionDragSelectableItem\MotionDragSelectableItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Internals\CustomizablePanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)controls\panels\LayoutDebugger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\LayoutDebugger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\OrientedStackForContainer\OrientedStackForContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Panels\OrientedStack\OrientedStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Tabs\TabContainer\TabContainer.cs" />
@@ -34,8 +39,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\HeaderFooterContent\HeaderFooterContent.Template.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Uncategorized\OffsetElement\OffsetElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\Converter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ConverterDefinitions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\FuncConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)converters\ConverterDefinitions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Deferral.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DeferralCanceledEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\AutoOrientationProperty.cs" />
@@ -50,9 +55,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MotionDrag\MotionDragConnectionEventDelegates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StateTriggers\OrientationStateTrigger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Structs And Enums\OrientationNeutralAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StateTriggers\ValueStateTrigger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)windowing\Window.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Structs And Enums\OrientationNeutralAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Windowing\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\DefaultTemplates.xaml">
@@ -111,13 +116,5 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\DefaultTemplates.xaml.cs">
-      <DependentUpon>DefaultTemplates.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Windowing\" />
   </ItemGroup>
 </Project>

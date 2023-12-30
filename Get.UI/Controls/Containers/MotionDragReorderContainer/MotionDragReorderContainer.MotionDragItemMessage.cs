@@ -73,7 +73,6 @@ partial class MotionDragContainer
         {
             var mousePos = dp.MousePositionToScreen;
             var window = WinWrapper.Windowing.Window.FromLocation((int)mousePos.X, (int)mousePos.Y);
-            //if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
             if (window.Class.Name is
 #if WINDOWS_UWP
                 "Xaml_WindowedPopupClass"

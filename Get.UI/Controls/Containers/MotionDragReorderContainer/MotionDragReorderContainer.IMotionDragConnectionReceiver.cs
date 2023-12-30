@@ -36,7 +36,11 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             ReorderOrientation is Orientation.Horizontal ?
             dragPosition.OriginalItemRect.Width :
             dragPosition.OriginalItemRect.Height;
-        AnimationController.StartShiftIndex = AnimationController.IndexOfItemAt(dragPosition.MousePositionToContainer.X, dragPosition.MousePositionToContainer.Y);
+        AnimationController.StartShiftIndex =
+            AnimationController.IndexOfItemAt(
+                dragPosition.MousePositionToContainer.X,
+                dragPosition.MousePositionToContainer.Y
+            );
     }
     void IMotionDragConnectionReceiver.DragDelta(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Point itemOffset)
         => DragDelta(sender, item, dragPosition, ref itemOffset);
@@ -150,16 +154,12 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             if (ReorderOrientation is Orientation.Vertical)
             {
                 itemOffset.X -= dragPosition.MousePositionToContainer.X - (dragPositionOriginal.MouseOffset.X - dragPositionOriginal.OriginalItemRect.X);
-                if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
             }
             else
             {
                 itemOffset.Y -= dragPosition.MousePositionToContainer.Y - (dragPositionOriginal.MouseOffset.Y - dragPositionOriginal.OriginalItemRect.Y);
-                if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
             }
         }
-        //if (InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift) is Windows.UI.Core.CoreVirtualKeyStates.Down)
-        //    Debugger.Break();
     }
     protected virtual void OnItemDroppingFromAnotherContainer(object? sender, object? item, int senderIndex, int newIndex)
     {

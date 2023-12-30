@@ -113,10 +113,10 @@ partial class MotionDragReorderContainerController(MotionDragContainer self)
         for (int i = 0; i < itemCount; i++)
         {
             // do not translate the one we are showing on popup
-            if (i == startRemoveIndex)
-            {
-                continue;
-            }
+            //if (i == startRemoveIndex)
+            //{
+            //    continue;
+            //}
             if (self.SafeContainerFromIndex(i) is not { } curItem || curItem.FindDescendantOrSelf<MotionDragItem>() is not { } st)
                 continue;
 
@@ -124,35 +124,42 @@ partial class MotionDragReorderContainerController(MotionDragContainer self)
 
 
             Point translationAmount = default;
-            if (i > 0 && i > startRemoveIndex)
-                if (self.SafeContainerFromIndex(i - 1) is { } prevItem)
-                {
-                    var d = curItem.TransformToVisual(prevItem).TransformPoint(default);
-                    translationAmount = translationAmount.Subtract(d);
-                }
-            positionsremoved[i] = TranAt(position) + TranAt(translationAmount);
-            if (i >= startShiftIndex)
-                translationAmount = translationAmount.Add(shift);
-            positions[i] = TranAt(position) + TranAt(translationAmount);
+            //if (i > 0 && i > startRemoveIndex)
+            //    if (self.SafeContainerFromIndex(i - 1) is { } prevItem)
+            //    {
+            //        var d = curItem.TransformToVisual(prevItem).TransformPoint(default);
+            //        translationAmount = translationAmount.Subtract(d);
+            //    }
+            positions[i] = positionsremoved[i] = TranAt(position) + TranAt(translationAmount);
+            // positions[i] = TranAt(position) + TranAt(translationAmount);
+        }
+        if (self.SafeContainerFromIndex(itemCount - 1) is { } lastItem)
+        {
+            positions[itemCount] = positions[itemCount - 1] +
+                    (orientation is Orientation.Horizontal ? lastItem.ActualSize.X : lastItem.ActualSize.Y);
+            positionsremoved[itemCount] = positionsremoved[itemCount - 1] +
+                (orientation is Orientation.Horizontal ? lastItem.ActualSize.X : lastItem.ActualSize.Y);
+        }
+        // iterate backwards so that we can read the previous value
+        for (int i = itemCount; i > startRemoveIndex; i--)
+        {
+            positions[i] -= positions[i] - positions[i - 1];
+            positionsremoved[i] -= positionsremoved[i] - positionsremoved[i - 1];
+        }
+        for (int i = startShiftIndex; i < positions.Length; i++)
+        {
+            positions[i] += shiftAmount;
+        }
+        for (int i = 0; i < itemCount; i++)
+        {
+            if (i == startRemoveIndex)
+                // do not play animation for the item we are dragging
+                continue;
+            if (self.SafeContainerFromIndex(i) is not { } curItem || curItem.FindDescendantOrSelf<MotionDragItem>() is not { } st)
+                continue;
+            var position = curItem.TransformToVisual(self.ItemPlace).TransformPoint(default);
+            var translationAmount = PointAt(positions[i]).Subtract(position);
             st.TemporaryAnimateTranslation(translationAmount.X, translationAmount.Y);
-            if (i == itemCount - 1)
-            {
-                positions[i + 1] = positions[i] +
-                    (orientation is Orientation.Horizontal ? curItem.ActualSize.X : curItem.ActualSize.Y);
-                positionsremoved[i + 1] = positionsremoved[i] +
-                    (orientation is Orientation.Horizontal ? curItem.ActualSize.X : curItem.ActualSize.Y);
-            }
-            if (i == startRemoveIndex + 1)
-            {
-                positionsremoved[i - 1] = positionsremoved[i];
-                positions[i - 1] = positions[i];
-            }
-            else if (i == startRemoveIndex + 2)
-            {
-                positionsremoved[i - 1] = positionsremoved[i];
-                positions[i - 1] = positions[i];
-            }
-
         }
     }
     public void Reset()
@@ -173,22 +180,37 @@ partial class MotionDragReorderContainerController(MotionDragContainer self)
         //    Debugger.Break();
         //}
         if (positionsremoved is null) UpdateAnimated();
+        SelfNote.DebugBreakOnShift();
         var pos = self.ReorderOrientation is Orientation.Vertical ? posY : posX;
         var idx = Array.BinarySearch(positionsremoved, pos);
         if (idx < 0)
         {
             idx = ~idx;
         }
-        //
-        if (idx >= 1 && idx < positionsremoved.Length)
+        int clampedIdx = idx >= positionsremoved.Length ? positionsremoved.Length - 1 : idx;
+        if (idx > 0 && pos < positionsremoved[clampedIdx])
         {
-            if (pos <= (positionsremoved[idx - 1] + positionsremoved[idx]) / 2)
+            clampedIdx--;
+            idx = clampedIdx;
+        }
+        if (clampedIdx > 0 && positionsremoved[clampedIdx] == positionsremoved[clampedIdx - 1])
+        {
+            clampedIdx--;
+            idx = clampedIdx;
+        if (idx >= 1 && idx + 1 < positionsremoved.Length)
+        {
+            if (pos >= (positionsremoved[idx] + positionsremoved[idx + 1]) / 2)
             {
-                idx--;
-                if (idx == startRemoveIndex + 2)
-                    idx--;
+                idx++;
             }
-            else if (idx == startRemoveIndex + 3) idx--;
+            }
+        }
+        if (idx == startRemoveIndex + 2)
+        {
+            if (pos < (positionsremoved[idx] + positionsremoved[idx + 1]) / 2)
+                idx--;
+            //if (pos <= (positionsremoved[idx + 1] + positionsremoved[idx + 2]) / 2)
+            //    idx--;
         }
         if (idx >= positionsremoved.Length) idx = positionsremoved.Length;
         return idx;

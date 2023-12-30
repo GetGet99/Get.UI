@@ -23,4 +23,11 @@ internal static class SelfNote
     /// Notes that the following code has the code that is not allowed in UWP certification.
     /// </summary>
     public static void HasDisallowedPInvoke() { }
+    public static void DebugBreakOnShift()
+    {
+#if DEBUG
+        if (WinWrapper.Input.Keyboard.IsShiftDown)
+            Debugger.Break();
+#endif
+    }
 }
