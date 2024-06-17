@@ -19,6 +19,7 @@ global using Windows.System;
 global using Windows.UI.Xaml.Markup;
 global using Windows.UI.Input;
 global using Windows.UI.Xaml.Hosting;
+global using Platform = Windows;
 using System.Runtime.InteropServices;
 using Windows.UI.Core;
 using Microsoft.Win32;

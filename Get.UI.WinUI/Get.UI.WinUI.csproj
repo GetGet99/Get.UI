@@ -8,6 +8,7 @@
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>12</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="DragRegion.xaml" />
@@ -16,6 +17,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.230907" />
+		<PackageReference Include="Get.Data" Version="1.0.6" />
 		<PackageReference Include="Get.EasyCSharp.Generator" Version="1.2.0" />
 		<PackageReference Include="Get.XAMLTools.Generator" Version="1.0.5" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta">

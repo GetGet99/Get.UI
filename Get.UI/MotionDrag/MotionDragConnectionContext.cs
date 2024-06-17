@@ -1,14 +1,17 @@
-﻿namespace Get.UI.MotionDrag;
+﻿#if WINDOWS_UWP
+#nullable enable
+#endif
+namespace Get.UI.MotionDrag;
 
-public class MotionDragConnectionContext
+public class MotionDragConnectionContext<TItem>
 {
-    readonly List<IMotionDragConnectionReceiver> Receivers = new();
-    internal void Add(IMotionDragConnectionReceiver control) => Receivers.Add(control);
-    internal bool Remove(IMotionDragConnectionReceiver control) => Receivers.Remove(control);
+    readonly List<IMotionDragConnectionReceiver<TItem>> Receivers = [];
+    internal void Add(IMotionDragConnectionReceiver<TItem> control) => Receivers.Add(control);
+    internal bool Remove(IMotionDragConnectionReceiver<TItem> control) => Receivers.Remove(control);
     public event MotionDragConnectionDraggingOutside? DraggingOutside;
     public event MotionDragConnectionDroppedOutside? DroppedOutside;
-    IMotionDragConnectionReceiver? CurrentReceiver;
-    internal void DragEvent(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Vector3 itemOffset)
+    IMotionDragConnectionReceiver<TItem>? CurrentReceiver;
+    internal void DragEvent(object? sender, TItem item, int senderIndex, DragPosition dragPosition, ref Vector3 itemOffset)
     {
         var mousePos = dragPosition.MousePositionToScreen;
         if (CurrentReceiver is null)
@@ -47,21 +50,22 @@ public class MotionDragConnectionContext
             }
         }
     }
-    internal void DropEvent(object? sender, object? item, int senderIndex, DragPosition dragPosition, DropManager dropManager)
+    internal void DropEvent(object? sender, TItem item, int senderIndex, DragPosition dragPosition, DropManager dropManager)
     {
         if (CurrentReceiver is not null)
             CurrentReceiver.Drop(sender, item, senderIndex, dragPosition, dropManager);
         else
             DroppedOutside?.Invoke(sender, item, dragPosition, dropManager);
     }
-    internal void CancelDragEvent(object? sender, object? item, int senderIndex)
+    internal void CancelDragEvent(object? sender, TItem item, int senderIndex)
     {
         CurrentReceiver?.DragLeave(sender, item, senderIndex);
         CurrentReceiver = null;
     }
-    public static void UnsafeAdd(MotionDragConnectionContext reference, IMotionDragConnectionReceiver receiver)
+    public static void UnsafeAdd(MotionDragConnectionContext<TItem> reference, IMotionDragConnectionReceiver<TItem> receiver)
         => reference.Add(receiver);
-    public static void UnsafeRemove(MotionDragConnectionContext reference, IMotionDragConnectionReceiver receiver)
+    public static void UnsafeRemove(MotionDragConnectionContext<TItem> reference, IMotionDragConnectionReceiver<TItem> receiver)
         => reference.Remove(receiver);
     public static void UnsafeSendDragEvent() { }
 }
+public class MotionDragConnectionContext : MotionDragConnectionContext<object?> { }

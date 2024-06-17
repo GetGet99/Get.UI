@@ -1,10 +1,13 @@
+#if WINDOWS_UWP
+#nullable enable
+#endif
 using Get.UI.MotionDrag;
 
 namespace Get.UI.Controls.Containers;
 
 partial class MotionDragContainer : IMotionDragConnectionReceiver
 {
-    bool IMotionDragConnectionReceiver.IsVisibleAt(Point pt)
+    bool IMotionDragConnectionReceiver<object?>.IsVisibleAt(Point pt)
     {
         if (!(XamlRoot.IsHostVisible && Visibility is Visibility.Visible))
             return false;
@@ -18,8 +21,8 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
     bool useCached = false; // warning: doesn't work, fix before turning this back to true
     GlobalContainerRect _globalRectangle;
     GlobalContainerRect GlobalRectangle => useCached ? _globalRectangle : GlobalContainerRect.GetFromContainer(this);
-    GlobalContainerRect IMotionDragConnectionReceiver.GlobalRectangle => GlobalRectangle;
-    void IMotionDragConnectionReceiver.DragEnter(object? sender, object? item, int senderIndex, DragPosition dragPositionIn, ref Point itemOffset)
+    GlobalContainerRect IMotionDragConnectionReceiver<object?>.GlobalRectangle => GlobalRectangle;
+    void IMotionDragConnectionReceiver<object?>.DragEnter(object? sender, object? item, int senderIndex, DragPosition dragPositionIn, ref Point itemOffset)
     {
         if (!ReferenceEquals(sender, this))
             AnimationController.Reset();
@@ -38,14 +41,14 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             dragPosition.OriginalItemRect.Height;
         AnimationController.StartShiftIndex = AnimationController.IndexOfItemAt(dragPosition.MousePositionToContainer.X, dragPosition.MousePositionToContainer.Y);
     }
-    void IMotionDragConnectionReceiver.DragDelta(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Point itemOffset)
+    void IMotionDragConnectionReceiver<object?>.DragDelta(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Point itemOffset)
         => DragDelta(sender, item, dragPosition, ref itemOffset);
 
-    void IMotionDragConnectionReceiver.DragLeave(object? sender, object? item, int senderIndex)
+    void IMotionDragConnectionReceiver<object?>.DragLeave(object? sender, object? item, int senderIndex)
     {
         AnimationController.StartShiftIndex = ItemsCount;
     }
-    void IMotionDragConnectionReceiver.Drop(object? sender, object? item, int senderIndex, DragPosition dragPosition, DropManager dropManager)
+    void IMotionDragConnectionReceiver<object?>.Drop(object? sender, object? item, int senderIndex, DragPosition dragPosition, DropManager dropManager)
     {
         //var pt = dragPosition.ItemPositionToScreen;
         //var hwnd = Popup.XamlRoot.ContentIslandEnvironment.AppWindowId;
