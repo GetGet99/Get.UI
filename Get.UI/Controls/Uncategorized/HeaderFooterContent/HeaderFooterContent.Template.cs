@@ -1,5 +1,6 @@
 using Get.UI.Controls.Internals;
 using Microsoft.UI.Xaml.Controls;
+using WinRT;
 
 namespace Get.UI.Controls;
 partial class HeaderFooterContent
@@ -57,7 +58,11 @@ partial class HeaderFooterContent
         var contentSize = SizeToOF(content.DesiredSize);
         if (ContentRequestedSize is { } n && n > contentSize.Along) contentSize.Along = n;
         if (contentSize.Opposite > maxOpp) maxOpp = contentSize.Opposite;
-        return OFToSize((avalSize.Along, maxOpp));
+        var maxAlong = Math.Max(headerSize.Along, footerSize.Along);
+        maxAlong = Math.Max(contentSize.Along, maxAlong);
+        var minAlong = Math.Min(headerSize.Along, footerSize.Along);
+        minAlong = Math.Min(contentSize.Along, maxAlong);
+        return OFToSize((Math.Clamp(avalSize.Along, minAlong, maxAlong), maxOpp));
     }
 
     private Size OnPanelArrange(Size finalSize)

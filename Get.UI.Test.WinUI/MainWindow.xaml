@@ -13,6 +13,7 @@
     xmlns:collections="using:System.Collections"
     mc:Ignorable="d">
     <Grid Margin="32">
+        <!--
         <Grid.Resources>
             <DataTemplate x:Key="SelfTagTemplate" x:DataType="FrameworkElement">
                 <TabViewItem Content="{x:Bind Tag}"/>
@@ -39,11 +40,11 @@
                     >       
                         <tabs:TabView.ItemsSource>
                             <local:XamlList>
-                                <TextBox Text="Hello From Tab 1" Tag="Tab 1"/>
-                                <TextBox Text="Hello From Tab 2" Tag="Tab 2"/>
-                                <TextBox Text="Hello From Tab 3" Tag="Tab 3"/>
-                                <TextBox Text="Hello From Tab 4" Tag="Tab 4"/>
-                                <TextBox Text="Hello From Tab 5" Tag="Tab 5"/>
+                                <TextBlock Text="Hello From Tab 1" Tag="Tab 1"/>
+                                <TextBlock Text="Hello From Tab 2" Tag="Tab 2"/>
+                                <TextBlock Text="Hello From Tab 3" Tag="Tab 3"/>
+                                <TextBlock Text="Hello From Tab 4" Tag="Tab 4"/>
+                                <TextBlock Text="Hello From Tab 5" Tag="Tab 5"/>
                             </local:XamlList>
                         </tabs:TabView.ItemsSource>
 
@@ -56,11 +57,11 @@
                         >
                             <tabs:TabView.ItemsSource>
                                 <local:XamlList>
-                                    <TextBox Text="Hello From Tab 6" Tag="Tab 6"/>
-                                    <TextBox Text="Hello From Tab 7" Tag="Tab 7"/>
-                                    <TextBox Text="Hello From Tab 8" Tag="Tab 8"/>
-                                    <TextBox Text="Hello From Tab 9" Tag="Tab 9"/>
-                                    <TextBox Text="Hello From Tab 10" Tag="Tab 10"/>
+                                    <TextBlock Text="Hello From Tab 6" Tag="Tab 6"/>
+                                    <TextBlock Text="Hello From Tab 7" Tag="Tab 7"/>
+                                    <TextBlock Text="Hello From Tab 8" Tag="Tab 8"/>
+                                    <TextBlock Text="Hello From Tab 9" Tag="Tab 9"/>
+                                    <TextBlock Text="Hello From Tab 10" Tag="Tab 10"/>
                                 </local:XamlList>
                             </tabs:TabView.ItemsSource>
 
@@ -72,11 +73,11 @@
                         >
                             <tabs:TabView.ItemsSource>
                                 <local:XamlList>
-                                    <TextBox Text="Hello From Tab 11" Tag="Tab 11"/>
-                                    <TextBox Text="Hello From Tab 12" Tag="Tab 12"/>
-                                    <TextBox Text="Hello From Tab 13" Tag="Tab 13"/>
-                                    <TextBox Text="Hello From Tab 14" Tag="Tab 14"/>
-                                    <TextBox Text="Hello From Tab 15" Tag="Tab 15"/>
+                                    <TextBlock Text="Hello From Tab 11" Tag="Tab 11"/>
+                                    <TextBlock Text="Hello From Tab 12" Tag="Tab 12"/>
+                                    <TextBlock Text="Hello From Tab 13" Tag="Tab 13"/>
+                                    <TextBlock Text="Hello From Tab 14" Tag="Tab 14"/>
+                                    <TextBlock Text="Hello From Tab 15" Tag="Tab 15"/>
                                 </local:XamlList>
                             </tabs:TabView.ItemsSource>
 
@@ -84,73 +85,26 @@
                     </pans:OrientedStack>
                 </local:XamlList>
             </tabs:TabView.ItemsSource>
-        </tabs:TabView>
-        <!--
-    <StackPanel Orientation="Horizontal" Spacing="16" Margin="32">
-        <stc:SmartTabContainer
+        </tabs:TabView>-->
+        <tabs:TabView
             x:Name="TabView"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Orientation="Horizontal"
-            Alignment="Start"
-            TabContainerCenterAlignmentResolvingMode="AlignLeftOrRight"
             ItemsSource="{x:Bind Strings}"
         >
-            <stc:SmartTabContainer.Header>
-                <Button Content="Button on header" Margin="0,0,0,0" />
-            </stc:SmartTabContainer.Header>
-            <stc:SmartTabContainer.InlineHeader>
-                <Button Content="Button" Margin="0,0,8,0" />
-            </stc:SmartTabContainer.InlineHeader>
-            <stc:SmartTabContainer.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <stc:SmartTabItem Content="{x:Bind}"/>
+            <tabs:TabView.ItemTemplate>
+                <DataTemplate x:DataType="local:TabWrapper">
+                    <tabs:TabItem Content="{x:Bind Value, Mode=OneWay}"/>
                 </DataTemplate>
-            </stc:SmartTabContainer.ItemTemplate>
-            <stc:SmartTabContainer.InlineFooter>
-                <Button Content="Button" Margin="0,0,8,0" />
-            </stc:SmartTabContainer.InlineFooter>
-            <stc:SmartTabContainer.Footer>
-                <Button Content="Button on footer" Margin="0,0,0,0" />
-            </stc:SmartTabContainer.Footer>
-        </stc:SmartTabContainer>
-        <StackPanel Spacing="16" Margin="32" Orientation="Vertical">
-            <cons:MotionDragContainer
-                x:Name="Container1"
-                ItemsSource="{x:Bind Strings}"
-                ReorderOrientation="Horizontal"
-                HorizontalAlignment="Left"
-            >
-                <cons:MotionDragContainer.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <cons:MotionDragItem Content="{x:Bind}" />
-                    </DataTemplate>
-                </cons:MotionDragContainer.ItemTemplate>
-            </cons:MotionDragContainer>
-            <cons:MotionDragContainer
-                x:Name="Container2"
-                ItemsSource="{x:Bind Strings2}"
-                HorizontalAlignment="Left"
-                ReorderOrientation="Horizontal"
-                ConnectionContext="{x:Bind Container1.ConnectionContext}"
-            >
-                <cons:MotionDragContainer.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <cons:MotionDragItem Content="{x:Bind}" />
-                    </DataTemplate>
-                </cons:MotionDragContainer.ItemTemplate>
-            </cons:MotionDragContainer>
-        </StackPanel>
-        <StackPanel Spacing="16" Margin="32" Orientation="Horizontal">
-
-            <ListView ItemsSource="{x:Bind Strings}" CanReorderItems="True" AllowDrop="True">
-
-            </ListView>
-            <ListView ItemsSource="{x:Bind Strings2}" CanReorderItems="True" AllowDrop="True">
-
-            </ListView>
-        </StackPanel>
-        <Button Content="New Window" Click="Button_Click"/>
-    </StackPanel>-->
+            </tabs:TabView.ItemTemplate>
+            <tabs:TabView.ContentTemplate>
+                <DataTemplate x:DataType="local:TabWrapper">
+                    <StackPanel>
+                        <TextBlock Text="This is the Tab Content!"/>
+                        <TextBox Text="{x:Bind Value, Mode=TwoWay}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </tabs:TabView.ContentTemplate>
+        </tabs:TabView>
     </Grid>
 </Window>

@@ -124,6 +124,10 @@ public partial class TabContainer : Control
         }
         return true;
     }
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        return base.MeasureOverride(availableSize);
+    }
 }
 public class TabClosedRequestEventArgs
 {
