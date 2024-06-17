@@ -50,16 +50,21 @@ public partial class MotionDragSelectableItem : MotionDragItem
                 }
             }
         }
-        if (newValue)
-        {
-            VisualStateManager.GoToState(this, "Selected", true);
-        }
-        else
-        {
-            VisualStateManager.GoToState(this, "Deselected", true);
-        }
         // Mirror IsSelected for now
         IsSelected = newValue;
+        OnPointerVisualStateUpdated();
+    }
+    protected override void OnPointerVisualStateUpdated()
+    {
+        if (!IsSelected)
+            base.OnPointerVisualStateUpdated();
+        else
+        {
+            if (CurrentPointerVisualState is PointerVisualState.Normal)
+                VisualStateManager.GoToState(this, "Selected", true);
+            else
+                VisualStateManager.GoToState(this, $"{CurrentPointerVisualState}Selected", true);
+        }
     }
     partial void OnIsSelectedChanged(bool oldValue, bool newValue)
     {

@@ -16,7 +16,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             (int)ptScreen.X,
             (int)ptScreen.Y
         ).Root == 
-        WinWrapper.Windowing.Window.FromWindowHandle(GlobalContainerRect.GetHwnd(XamlRoot)).Root;
+        WinWrapper.Windowing.Window.FromWindowHandle(Windowing.Window.GetFromXamlRoot(XamlRoot).WindowHandle).Root;
     }
     bool useCached = false; // warning: doesn't work, fix before turning this back to true
     GlobalContainerRect _globalRectangle;
@@ -34,12 +34,16 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
     void DragDelta(object? sender, object? item, DragPosition dragPositionIn, ref Point itemOffset)
     {
         var dragPosition = dragPositionIn.ToNewContainer(GlobalRectangle);
-        SnapDrag(dragPosition, ref itemOffset);
+        SnapDrag(dragPosition, dragPositionIn, ref itemOffset);
         AnimationController.ShiftAmount =
             ReorderOrientation is Orientation.Horizontal ?
             dragPosition.OriginalItemRect.Width :
             dragPosition.OriginalItemRect.Height;
-        AnimationController.StartShiftIndex = AnimationController.IndexOfItemAt(dragPosition.MousePositionToContainer.X, dragPosition.MousePositionToContainer.Y);
+        AnimationController.StartShiftIndex =
+            AnimationController.IndexOfItemAt(
+                dragPosition.MousePositionToContainer.X,
+                dragPosition.MousePositionToContainer.Y
+            );
     }
     void IMotionDragConnectionReceiver<object?>.DragDelta(object? sender, object? item, int senderIndex, DragPosition dragPosition, ref Point itemOffset)
         => DragDelta(sender, item, dragPosition, ref itemOffset);
@@ -119,6 +123,7 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             //{
             //    st2.ResetTranslationImmedietly();
             //}
+            OnItemDroppingFromAnotherContainer(sender, item, senderIndex, newIdx);
             if (newIdx > ItemsCount) newIdx = ItemsCount;
             var itemSource = ItemsSource;
             if (itemSource is null)
@@ -144,18 +149,24 @@ partial class MotionDragContainer : IMotionDragConnectionReceiver
             def.Complete();
         }
     }
-    void SnapDrag(DragPosition dragPosition, ref Point itemOffset)
+    void SnapDrag(DragPosition dragPosition, DragPosition dragPositionOriginal, ref Point itemOffset)
     {
         mousePos = dragPosition.MousePositionToContainer;
         if (mousePos.X > 0 && mousePos.X < ActualWidth && mousePos.Y > 0 && mousePos.Y < ActualHeight)
         {
             if (ReorderOrientation is Orientation.Vertical)
-                itemOffset.X -= dragPosition.CumulativeTranslation.X;
+            {
+                itemOffset.X -= dragPosition.MousePositionToContainer.X - (dragPositionOriginal.MouseOffset.X - dragPositionOriginal.OriginalItemRect.X);
+            }
             else
-                itemOffset.Y -= dragPosition.CumulativeTranslation.Y;
+            {
+                itemOffset.Y -= dragPosition.MousePositionToContainer.Y - (dragPositionOriginal.MouseOffset.Y - dragPositionOriginal.OriginalItemRect.Y);
+            }
         }
-        //if (InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift) is Windows.UI.Core.CoreVirtualKeyStates.Down)
-        //    Debugger.Break();
+    }
+    protected virtual void OnItemDroppingFromAnotherContainer(object? sender, object? item, int senderIndex, int newIndex)
+    {
+
     }
     protected virtual void OnItemDropFromAnotherContainer(object? sender, object? item, int senderIndex, int newIndex)
     {

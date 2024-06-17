@@ -16,7 +16,9 @@
                         Footer="{TemplateBinding Footer}"
                         FooterTemplate="{TemplateBinding FooterTemplate}"
                         InlineHeader="{TemplateBinding InlineHeader}"
+                        InlineHeaderTemplate="{TemplateBinding InlineHeaderTemplate}"
                         InlineFooter="{TemplateBinding InlineFooter}"
+                        InlineFooterTemplate="{TemplateBinding InlineFooterTemplate}"
                         ContentRequestedSize="{TemplateBinding TabContainerRequestedSize}"
                         Orientation="{TemplateBinding Orientation}"
                         Alignment="{TemplateBinding Alignment}"
@@ -24,21 +26,36 @@
                         StartInset="{TemplateBinding StartInset}"
                         EndInset="{TemplateBinding EndInset}"
                     >
-                        <!--<ScrollViewer HorizontalScrollMode="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            
-                        </ScrollViewer>-->
-                        <ctns:MotionDragSelectableContainer
-                            MinWidth="100"
-                            Height="{TemplateBinding Height}"
-                            ItemsSource="{TemplateBinding ItemsSource}"
-                            ItemTemplate="{TemplateBinding ItemTemplate}"
-                            PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                            PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                            ReorderOrientation="{TemplateBinding Orientation}"
-                            ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                            VerticalAlignment="Center"
-                        >
-                        </ctns:MotionDragSelectableContainer>
+                        <ScrollViewer x:Name="ContainerAreaScrollViewer" HorizontalAlignment="Left">
+                            <pans:OrientedStack Orientation="{TemplateBinding Orientation}">
+                                <ctns:MotionDragSelectableContainer
+                                    x:Name="Container"
+                                    MinWidth="100"
+                                    Height="{TemplateBinding Height}"
+                                    ItemsSource="{TemplateBinding ItemsSource}"
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    ReorderOrientation="{TemplateBinding Orientation}"
+                                    ConnectionContext="{Binding ConnectionContext, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    VerticalAlignment="Center"
+                                    PreferAlwaysSelectItem="True"
+                                >
+                                </ctns:MotionDragSelectableContainer>
+                                <Button
+                                    x:Name="AddTabButton"
+                                    Padding="5"
+                                    Visibility="{TemplateBinding AddTabButtonVisibility}"
+                                    CommandParameter="{TemplateBinding AddTabCommandParameter}"
+                                    HorizontalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent">
+                                    <PathIcon Data="F1 M 17.5 9.375 C 17.5 9.544271 17.43815 9.690756 17.314453 9.814453 C 17.190754 9.938151 17.04427 10 16.875 10 L 10 10 L 10 16.875 C 10 17.044271 9.93815 17.190756 9.814453 17.314453 C 9.690755 17.43815 9.544271 17.5 9.375 17.5 C 9.205729 17.5 9.059244 17.43815 8.935547 17.314453 C 8.811849 17.190756 8.75 17.044271 8.75 16.875 L 8.75 10 L 1.875 10 C 1.705729 10 1.559245 9.938151 1.435547 9.814453 C 1.311849 9.690756 1.25 9.544271 1.25 9.375 C 1.25 9.205729 1.311849 9.059245 1.435547 8.935547 C 1.559245 8.81185 1.705729 8.75 1.875 8.75 L 8.75 8.75 L 8.75 1.875 C 8.75 1.70573 8.811849 1.559246 8.935547 1.435547 C 9.059244 1.31185 9.205729 1.25 9.375 1.25 C 9.544271 1.25 9.690755 1.31185 9.814453 1.435547 C 9.93815 1.559246 10 1.70573 10 1.875 L 10 8.75 L 16.875 8.75 C 17.04427 8.75 17.190754 8.81185 17.314453 8.935547 C 17.43815 9.059245 17.5 9.205729 17.5 9.375 Z " VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5, 0.5" Margin="-1, -1, 0, 0">
+                                        <PathIcon.RenderTransform>
+                                            <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                        </PathIcon.RenderTransform>
+                                    </PathIcon>
+                                </Button>
+                            </pans:OrientedStack>
+                        </ScrollViewer>
                     </guis:HeaderFooterContent>
                 </ControlTemplate>
             </Setter.Value>

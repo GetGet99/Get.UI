@@ -5,7 +5,9 @@
     xmlns:tabs="using:Get.UI.Controls.Tabs"
     xmlns:pans="using:Get.UI.Controls.Panels"
     xmlns:ctns="using:Get.UI.Controls.Containers"
+    xmlns:conv="using:Get.UI.Converters"
 >
+    <conv:OrientationFlipConverter x:Key="GUCOrientationFlipConverter"/>
     <Style x:Name="DefaultGUICTTabViewStyle" TargetType="tabs:TabView">
         <Setter Property="ToolbarTemplate">
             <Setter.Value>
@@ -14,29 +16,52 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="tabs:TabView">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <pans:OrientedStack
+                        Orientation="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource GUCOrientationFlipConverter}}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                    >
                         <tabs:TabContainer
-                            Orientation="Horizontal"
-                            Height="30"
+                            x:Name="TabContainer"
+                            Header="{TemplateBinding Header}"
+                            HeaderTemplate="{TemplateBinding HeaderTemplate}"
+                            Footer="{TemplateBinding Footer}"
+                            FooterTemplate="{TemplateBinding FooterTemplate}"
+                            InlineHeader="{TemplateBinding InlineHeader}"
+                            InlineHeaderTemplate="{TemplateBinding InlineHeaderTemplate}"
+                            InlineFooter="{TemplateBinding InlineFooter}"
+                            InlineFooterTemplate="{TemplateBinding InlineFooterTemplate}"
+                            TabContainerRequestedSize="{TemplateBinding TabContainerRequestedSize}"
+                            Orientation="{TemplateBinding Orientation}"
+                            Alignment="{TemplateBinding Alignment}"
+                            TabContainerCenterAlignmentResolvingMode="{TemplateBinding TabContainerCenterAlignmentResolvingMode}"
                             ItemsSource="{TemplateBinding ItemsSource}"
                             ItemTemplate="{TemplateBinding ItemTemplate}"
                             ConnectionContext="{TemplateBinding ConnectionContext}"
                             PrimarySelectedItem="{Binding PrimarySelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                             PrimarySelectedIndex="{Binding PrimarySelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            StartInset="{TemplateBinding TitleBarLeftInset}"
+                            EndInset="{TemplateBinding TitleBarRightInset}"
+                            TabCloseCommand="{TemplateBinding TabCloseCommand}"
+                            Visibility="{TemplateBinding TabsVisibility}"
+                            AddTabButtonVisibility="{TemplateBinding AddTabButtonVisibility}"
+                            AddTabCommand="{TemplateBinding AddTabCommand}"
+                            AddTabCommandParameter="{TemplateBinding AddTabCommandParameter}"
+                            pans:OrientedStack.Length="Auto"
                         >
                             
                         </tabs:TabContainer>
-                        <ContentPresenter x:Name="ToolbarPresenter" Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ToolbarTemplate}" Grid.Row="1"/>
-                        <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Row="2"/>
-                    </Grid>
+                        <pans:OrientedStack Orientation="Vertical" pans:OrientedStack.Length="*">
+                            <ContentPresenter x:Name="ToolbarPresenter" Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ToolbarTemplate}" pans:OrientedStack.Length="Auto" />
+                            <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding PrimarySelectedItem}" ContentTemplate="{TemplateBinding ContentTemplate}" pans:OrientedStack.Length="*"/>
+                        </pans:OrientedStack>
+                    </pans:OrientedStack>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

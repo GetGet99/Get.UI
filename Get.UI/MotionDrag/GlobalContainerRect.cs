@@ -6,12 +6,22 @@ using Windows.UI.WindowManagement;
 #endif
 namespace Get.UI.MotionDrag;
 
-public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect ContainerRectToWindow, double RasterizationScale)
+public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect ContainerRectToWindow, double RasterizationScale, bool IsValid = true)
 {
+    public static GlobalContainerRect Invalid => new(default, default, default, IsValid: false);
     public Rect ContainerRectToScreen => new(
         PointToScreen(default),
         ContainerRectToWindow.ToSize()
     );
+    internal static Point GetPos(nint hwnd)
+    {
+        System.Drawing.Point pt = default;
+        unsafe
+        {
+            _ = Windows.Win32.PInvoke.MapWindowPoints(new(hwnd), default, &pt, 1);
+        }
+        return new(pt.X, pt.Y);
+    }
     static Point GetPos(XamlRoot root)
     {
 #if WINDOWS_UWP
@@ -39,28 +49,23 @@ public readonly record struct GlobalContainerRect(Point WindowPosOffset, Rect Co
         return new(pt.X, pt.Y);
 #endif
     }
-    internal static nint GetHwnd(XamlRoot root)
-    {
 #if WINDOWS_UWP
-        switch (root.UIContext.As<Windows.Internal.IUIContextPartner>().WindowContext)
-        {
-            case CoreWindow cw:
-                return cw.As<ICoreWindowInterop>().WindowHandle;
-            case AppWindow aw:
-                return (nint)aw.As<IApplicationWindow_HwndInterop>().WindowHandle.Value;
-        }
-        return default;
-#else
-        var hwnd = root.ContentIslandEnvironment.AppWindowId;
-        return (nint)hwnd.Value;
-#endif
+    internal static object GetWindowContext(XamlRoot root)
+    {
+        return root.UIContext.As<Windows.Internal.IUIContextPartner>().WindowContext;
     }
-    public static GlobalContainerRect GetFromXamlRoot(XamlRoot root, Rect ContainerRect)
-        => new(GetPos(root), ContainerRect, root.RasterizationScale);
+#endif
+    public static GlobalContainerRect GetFromXamlRoot(XamlRoot? root, Rect ContainerRect)
+    {
+        if (root is null) return Invalid;
+        return new(GetPos(root), ContainerRect, root.RasterizationScale);
+    }
     public static GlobalContainerRect GetFromContainer(UIElement container)
     {
-        var margin = ((FrameworkElement)container.XamlRoot.Content).Margin;
-        var pos = container.TransformToVisual(container.XamlRoot.Content).TransformPoint(
+        var rootElement = container.XamlRoot?.Content as FrameworkElement;
+        if (rootElement is null) return Invalid;
+        var margin = rootElement.Margin;
+        var pos = container.TransformToVisual(rootElement).TransformPoint(
             new(margin.Left, margin.Top)
         );
         var size = container.ActualSize;

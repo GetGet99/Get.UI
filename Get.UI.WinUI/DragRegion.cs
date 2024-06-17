@@ -1,146 +1,126 @@
-﻿using Get.UI.MotionDrag;
-using Microsoft.UI.Windowing;
-using System.Runtime.InteropServices;
-using Windows.Graphics;
-using Windows.Win32;
-using WinWrapper.Input;
-using WinWrapper.Windowing;
-using DispatcherQueueTimer = Microsoft.UI.Dispatching.DispatcherQueueTimer;
-using Window = WinWrapper.Windowing.Window;
-
+﻿using Windows.Graphics;
+using System.Drawing;
 namespace Get.UI.Controls;
-
-public class DragRegion : Control
+[AttachedProperty(typeof(bool), "Clickable", typeof(FrameworkElement), GenerateLocalOnPropertyChangedMethod = true)]
+public partial class DragRegion : Grid
 {
-    Border RootElement => (Border)GetTemplateChild(nameof(RootElement));
     public DragRegion()
     {
-        DefaultStyleKey = typeof(DragRegion);
-    }
-    protected override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-        RootElement.SizeChanged += RootElement_SizeChanged;
-        RootElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
-        RootElement.ManipulationStarting += RootElement_ManipulationStarting;
-        RootElement.ManipulationStarted += RootElement_ManipulationStarted;
-        RootElement.ManipulationDelta += RootElement_ManipulationDelta;
-        RootElement.ManipulationCompleted += RootElement_ManipulationCompleted;
-        //RootElement.PointerPressed += RootElement_PointerPressed;
-        //timer = DispatcherQueue.CreateTimer();
-        //timer.Interval = TimeSpan.FromMilliseconds(200);
-        //timer.Tick += (_, _) => TimerDone();
-        //Loaded += DragRegion_Loaded;
-        //Unloaded += DragRegion_Unloaded;
+        SizeChanged += DragRegion_SizeChanged;
+        Loaded += DragRegion_Loaded;
+        Unloaded += DragRegion_Unloaded;
     }
 
-    private void RootElement_PointerPressed(object sender, PointerRoutedEventArgs e)
+    private void XamlRoot_Changed(XamlRoot sender, XamlRootChangedEventArgs args)
     {
-        e.Handled = true;
-        var window = Window.GetWindowFromPoint(Cursor.Position);
-        var window2 = Window.FromWindowHandle((nint)XamlRoot.ContentIslandEnvironment.AppWindowId.Value);
-        
-        PInvoke.SetCapture(new(window2.Handle));
-        //window2.Focus();
-        //window2.SendMessage(WindowMessages.LButtonDown, 0, 0);
-        //window2.SendMessage(WindowMessages.LButtonUp, 0, 0);
-        window2.SendMessage(WindowMessages.SysCommand, (nuint)0xF012, 0);
+        UpdateRegion();
+    }
+    readonly static Dictionary<object, DragRegion> mapping = [];
+    static partial void OnClickableChanged(FrameworkElement obj, bool oldValue, bool newValue)
+    {
+        if (newValue)
+        {
+            obj.SizeChanged -= Obj_SizeChanged;
+            obj.Loaded -= Obj_Loaded;
+            obj.Unloaded -= Obj_Unloaded;
+            obj.SizeChanged += Obj_SizeChanged;
+            obj.Loaded += Obj_Loaded;
+            obj.Unloaded += Obj_Unloaded;
+            Update(obj);
+        } else if (oldValue)
+        {
+            obj.SizeChanged -= Obj_SizeChanged;
+            obj.Loaded -= Obj_Loaded;
+            obj.Unloaded -= Obj_Unloaded;
+            Update(obj);
+            mapping.Remove(obj);
+        }
+    }
+
+    private static void Obj_Unloaded(object sender, RoutedEventArgs e) => Update(sender);
+
+    private static void Obj_Loaded(object sender, RoutedEventArgs e) => Update(sender);
+    static void Obj_SizeChanged(object sender, SizeChangedEventArgs e) => Update(sender);
+    static void Update(object sender)
+    {
+        var dragRegion = (sender as DependencyObject)?.FindAscendant<DragRegion>();
+        if (dragRegion is null)
+        {
+            if (!mapping.TryGetValue(sender, out dragRegion))
+                return;
+        }
+        else
+            mapping[sender] = dragRegion;
+        dragRegion?.UpdateRegion();
     }
 
     private void DragRegion_Unloaded(object sender, RoutedEventArgs e)
     {
-        incps = null;
+        XamlRoot.Changed -= XamlRoot_Changed;
+        try
+        {
+            current?.ClearAllRegionRects();
+        } catch
+        {
+            current = null;
+        }
     }
 
     private void DragRegion_Loaded(object sender, RoutedEventArgs e)
     {
+        XamlRoot.Changed -= XamlRoot_Changed;
+        XamlRoot.Changed += XamlRoot_Changed;
+        current?.ClearAllRegionRects();
+        current = InputNonClientPointerSource.GetForWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
     }
 
-    private void Incps_PointerEntered(InputNonClientPointerSource sender, NonClientPointerEventArgs args)
+    private void DragRegion_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        
+        UpdateRegion();
     }
 
-    private void Incps_PointerPressed(InputNonClientPointerSource sender, NonClientPointerEventArgs args)
+    InputNonClientPointerSource? current;
+    public void UpdateRegion()
     {
-        
-    }
-
-    InputNonClientPointerSource? incps;
-    DispatcherQueueTimer timer;
-
-    private void RootElement_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        //timer.Start();
-    }
-    void TimerDone()
-    {
-        if (!WinWrapper.Input.Cursor.IsLeftButtonDown)
-        {
-            timer.Start();
-            return;
-        }
-        if (incps is null)
-        {
-            appWindow = AppWindow.GetFromWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
-            incps = InputNonClientPointerSource.GetForWindowId(appWindow.Id);
-            incps.PointerPressed += Incps_PointerPressed;
-            incps.PointerEntered += Incps_PointerEntered;
-        }
-        if (incps is null) return;
         try
         {
-            var rect = GlobalContainerRect.GetFromContainer(this).ContainerRectToWindow;
-            if (rect.Y > 0)
-            {
-                rect = rect with { Y = 0, Height = rect.Bottom - 0 };
-            }
-            incps.ClearRegionRects(NonClientRegionKind.Caption);
-            incps.SetRegionRects(NonClientRegionKind.Caption, new RectInt32[]
-            {
-                new((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height)
-            });
+            current?.SetRegionRects(NonClientRegionKind.Caption,
+            [new(0, 0, (int)ActualWidth, (int)ActualHeight)]
+        );
+            current?.SetRegionRects(NonClientRegionKind.Passthrough,
+                (from x in GetClickableRectangles(this, this) select new RectInt32(x.X, x.Y, x.Width, x.Height)).ToArray()
+            );
+        } catch
+        {
+            current = null;
         }
-        catch { }
     }
-
-    private void RootElement_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+    static IEnumerable<Rectangle> GetClickableRectangles(UIElement element, UIElement relativeTo)
     {
-        e.Handled = true;
-        //InputNonClientPointerSource.GetForWindowId(appWindow!.Id)
-        //.ClearRegionRects(NonClientRegionKind.Caption);
+        var childCount = VisualTreeHelper.GetChildrenCount(element);
+        for (int i = 0; i < childCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(element, i);
+            if ((child is FrameworkElement fe && GetClickable(fe)) ||
+            child switch
+            {
+                Panel panel => panel.Background == null,
+                Control control => control.Background == null,
+                Border border => border.Background == null,
+                ContentPresenter contentPresenter => contentPresenter.Background == null,
+                _ => false
+            })
+                // this element is probably designed to be click-through
+                foreach (var rect in GetClickableRectangles((UIElement)child, relativeTo))
+                    yield return rect;
+            else
+                // this element is probably not designed to be click through
+                yield return GetRect((UIElement)child, relativeTo);
+        }
     }
-
-    AppWindow? appWindow;
-    Point translationDeltaRemaining;
-    private void RootElement_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+    static Rectangle GetRect(UIElement element, UIElement relativeTo)
     {
-        e.Handled = true;
-        translationDeltaRemaining = translationDeltaRemaining.Add(e.Delta.Translation.Multiply(XamlRoot.RasterizationScale));
-        var moveAmount = new PointInt32((int)translationDeltaRemaining.X, (int)translationDeltaRemaining.Y);
-        var newPos = appWindow!.Position;
-        newPos.X += moveAmount.X;
-        newPos.Y += moveAmount.Y;
-        appWindow!.Move(newPos);
-        translationDeltaRemaining = new(translationDeltaRemaining.X - moveAmount.X, translationDeltaRemaining.Y - moveAmount.Y);
+        var pt = element.TransformToVisual(relativeTo).TransformPoint(default);
+        return new() { X = (int)pt.X, Y = (int)pt.Y, Width = (int)element.ActualSize.X, Height = (int)element.ActualSize.Y };
     }
-
-    private void RootElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
-    {
-        e.Handled = true;
-        appWindow = AppWindow.GetFromWindowId(XamlRoot.ContentIslandEnvironment.AppWindowId);
-        translationDeltaRemaining = e.Cumulative.Translation.Multiply(XamlRoot.RasterizationScale);
-        var moveAmount = new PointInt32((int)translationDeltaRemaining.X, (int)translationDeltaRemaining.Y);
-        var newPos = appWindow.Position;
-        newPos.X += moveAmount.X;
-        newPos.Y += moveAmount.Y;
-        appWindow.Move(newPos);
-        translationDeltaRemaining = new(translationDeltaRemaining.X - moveAmount.X, translationDeltaRemaining.Y - moveAmount.Y);
-    }
-
-    private void RootElement_ManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)
-    {
-        e.Handled = true;
-    }
-
 }

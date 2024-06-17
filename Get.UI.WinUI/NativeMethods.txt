@@ -3,3 +3,5 @@ GetModuleHandle
 GetProcAddress
 SetCapture
 ReleaseCapture
+RedrawWindow
+SHAppBarMessage

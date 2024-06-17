@@ -9,7 +9,7 @@ public partial class MotionDragContainer : ItemsControl
     public MotionDragContainer()
     {
         DefaultStyleKey = typeof(ItemsControl);
-        Background = new SolidColorBrush(Colors.Transparent);
+        //Background = new SolidColorBrush(Colors.Transparent);
         AllowDrop = true;
         AnimationController = new(this);
         ConnectionContext = new();
@@ -25,185 +25,13 @@ public partial class MotionDragContainer : ItemsControl
     internal UIElement? SafeContainerFromIndex(int idx) => idx < 0 ? null : ContainerFromIndex(idx) as UIElement;
     internal int SafeIndexFromContainer(DependencyObject? obj) => obj is null ? -1 : IndexFromContainer(obj);
     //bool DidSetZIndex = false;
-    MotionDragItem CurrentManipulationItem;
+    MotionDragItem? CurrentManipulationItem;
     partial void OnConnectionContextChanged(MotionDragConnectionContext? oldValue, MotionDragConnectionContext? newValue)
     {
         oldValue?.Remove(this);
         if (IsLoaded)
             newValue?.Add(this);
     }
-    //internal void MotionDragItemManipulationStart(MotionDragItem item)
-    //{
-    //    IsReadyForNextReorderManipulation = false;
-    //    CurrentManipulationItem = item;
-    //    var idx = IndexFromContainer(item);
-    //    if (idx is -1) idx = IndexFromContainer(item.FindAscendant<ContentPresenter>());
-    //    if (idx is -1) Debugger.Break();
-    //    curItemIndex = curHoverItemIndex = idx;
-    //    if (ContainerFromIndex(idx) is UIElement ele
-    //        && Canvas.GetZIndex(ele) is 0)
-    //    {
-    //        Canvas.SetZIndex(ele, 1);
-    //        DidSetZIndex = true;
-    //    }
-    //    else DidSetZIndex = false;
-    //    tranOffset = 0;
-    ////}
-    //internal void MotionDragItemManipulationDelta(MotionDragItem item, double tranX, double tranY)
-    //{
-    //    var orientation = ReorderOrientation;
-    //    double tran = orientation is Orientation.Horizontal ? tranX : tranY;
-    //    tranOffset += tran;
-
-    //    Point PointAt(double tran) => orientation is Orientation.Horizontal ? new(tran, 0) : new(0, tran);
-
-    //    double TranAtPt(Point pt) => orientation is Orientation.Horizontal ? pt.X : pt.Y;
-    //    double TranAtVec2(Vector2 vec) => orientation is Orientation.Horizontal ? vec.X : vec.Y;
-    //    double TranAtSize(Size size) => orientation is Orientation.Horizontal ? size.Width : size.Height;
-
-    //    // move backward
-    //    if (curHoverItemIndex <= curItemIndex)
-    //    {
-    //        // while previous item exists
-    //        while (SafeContainerFromIndex(curHoverItemIndex - 1) is { } prevItem)
-    //        {
-    //            var prevTest = TranAtPt(prevItem.TransformToVisual(item).TransformPoint(PointAt(-tranOffset))) + TranAtVec2(prevItem.ActualSize) / 2;
-
-    //            if (prevTest > 0)
-    //            {
-    //                curHoverItemIndex--;
-    //                // move to previous item
-    //                if (prevItem.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //                {
-    //                    // animate
-    //                    if (SafeContainerFromIndex(curHoverItemIndex + 1) is { } curItem)
-    //                    {
-    //                        var d = curItem.TransformToVisual(prevItem).TransformPoint(default);
-    //                        st.TemporaryAnimateTranslation(d.X, d.Y);
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-    //                break;
-    //            }
-    //        }
-    //    } else
-    //    {
-    //        while (SafeContainerFromIndex(curHoverItemIndex) is { } curItem)
-    //        {
-    //            var prevTest = TranAtPt(curItem.TransformToVisual(item).TransformPoint(PointAt(-tranOffset))) - TranAtVec2(curItem.ActualSize) / 2;
-    //            if (prevTest > 0)
-    //            {
-    //                curHoverItemIndex--;
-    //                // move to previous item
-    //                if (curItem.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //                {
-    //                    // animate
-    //                    st.TemporaryAnimateTranslation(0, 0);
-    //                }
-    //            }
-    //            else
-    //            {
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    // move forward
-    //    if (curHoverItemIndex >= curItemIndex)
-    //    {
-    //        while (SafeContainerFromIndex(curHoverItemIndex + 1) is { } nextItem)
-    //        {
-    //            var nextTest = TranAtPt(item.TransformToVisual(nextItem).TransformPoint(PointAt(tranOffset))) + TranAtVec2(nextItem.ActualSize) / 2;
-
-    //            if (nextTest > 0)
-    //            {
-    //                curHoverItemIndex++;
-    //                // move to next item
-    //                if (nextItem.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //                {
-    //                    // animate
-    //                    if (SafeContainerFromIndex(curHoverItemIndex - 1) is { } curItem)
-    //                    {
-    //                        var d = curItem.TransformToVisual(nextItem).TransformPoint(default);
-    //                        st.TemporaryAnimateTranslation(d.X, d.Y);
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-    //                break;
-    //            }
-    //        }
-    //    } else
-    //    {
-    //        while (SafeContainerFromIndex(curHoverItemIndex) is { } curItem)
-    //        {
-    //            var nextTest = TranAtPt(item.TransformToVisual(curItem).TransformPoint(PointAt(tranOffset))) - TranAtVec2(curItem.ActualSize) / 2;
-
-    //            if (nextTest > 0)
-    //            {
-    //                curHoverItemIndex++;
-    //                // move to next item
-    //                if (curItem.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //                {
-    //                    st.TemporaryAnimateTranslation(0, 0);
-    //                }
-    //            }
-    //            else
-    //            {
-    //                break;
-    //            }
-    //        }
-    //    }
-    //}
-    //internal async void MotionDragItemManipulationEnd(MotionDragItem item)
-    //{
-    //    if (DidSetZIndex &&
-    //        ContainerFromIndex(curItemIndex) is UIElement ele)
-    //        Canvas.SetZIndex(ele, 0);
-    //    if (curHoverItemIndex != curItemIndex)
-    //    {
-    //        if ((SafeContainerFromIndex(curHoverItemIndex) is { } curItem))
-    //        {
-    //            var d = curItem.TransformToVisual(item).TransformPoint(default);
-    //            await item.TemporaryAnimateTranslationAsync(d.X, d.Y);
-    //            int i = 0;
-    //            while (SafeContainerFromIndex(i++)?.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //            {
-    //                st.ResetTranslationImmedietly();
-    //            }
-    //            var itemSource = ItemsSource;
-    //            if (itemSource is null)
-    //            {
-    //                var itemToMove = Items[curItemIndex];
-    //                Items.RemoveAt(curItemIndex);
-    //                Items.Insert(curHoverItemIndex, itemToMove);
-    //            }
-    //            else if (itemSource is IList list)
-    //            {
-    //                var itemToMove = list[curItemIndex];
-    //                list.RemoveAt(curItemIndex);
-    //                list.Insert(curHoverItemIndex, itemToMove);
-    //                if (list is not INotifyCollectionChanged)
-    //                {
-    //                    // refresh ItemSource
-    //                    ItemsSource = null;
-    //                    ItemsSource = list;
-    //                }
-    //            } else
-    //            {
-    //                IsReadyForNextReorderManipulation = true;
-    //                throw new NotSupportedException("ItemSource must implement IList");
-    //            }
-    //            IsReadyForNextReorderManipulation = true;
-    //        }
-    //    } else
-    //    {
-    //        await item.TemporaryAnimateTranslationAsync(0, 0);
-    //        IsReadyForNextReorderManipulation = true;
-    //    }
-    //}
     internal int ItemsCount
     {
         get
@@ -216,15 +44,11 @@ public partial class MotionDragContainer : ItemsControl
     readonly MotionDragReorderContainerController AnimationController;
     partial void OnReorderOrientationChanged(Orientation oldValue, Orientation newValue)
     {
-        int i = 0;
-        while (SafeContainerFromIndex(i++)?.FindDescendantOrSelf<MotionDragItem>() is { } st)
-        {
-            st.OnReorderOrientationUpdated();
-        }
+
     }
     internal object? ObjectFromSRI(MotionDragItem item)
     {
-        return FirstNotNullOrNull(item.FindAscendants(), x => ItemFromContainer(x));
+        return FirstNotNullOrNull(item.FindAscendants(), ItemFromContainer);
 
     }
     TReturn? FirstNotNullOrNull<TReturn, TSource>(IEnumerable<TSource> t, Func<TSource, TReturn?> func) where TReturn : class
@@ -235,55 +59,6 @@ public partial class MotionDragContainer : ItemsControl
         }
         return null;
     }
-    //Point pos;
-    //protected override void OnDragEnter(DragEventArgs e)
-    //{
-    //    int i = 0;
-    //    while (SafeContainerFromIndex(i++) is { } container && container.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //    {
-    //        if (st != CurrentManipulationItem)
-    //        {
-    //            container.IsHitTestVisible = false;
-    //        }
-    //    }
-    //    pos = e.GetPosition(this);
-    //    CurrentManipulationItem.Opacity = 1;
-    //    e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
-    //    e.Handled = true;
-    //}
-    //internal void MotionDragItemDragEnter(DragEventArgs e)
-    //{
-
-    //}
-    //protected override void OnDragOver(DragEventArgs e)
-    //{
-    //    var pos2 = e.GetPosition(this);
-    //    e.DragUIOverride.IsContentVisible = false;
-    //    e.DragUIOverride.IsGlyphVisible = false;
-    //    e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
-    //    MotionDragItemManipulationDelta(
-    //        CurrentManipulationItem,
-    //        pos2.X - pos.X,
-    //        pos2.Y - pos.Y
-    //    );
-    //    pos = pos2;
-
-    //    e.Handled = true;
-    //}
-    //protected override void OnDragLeave(DragEventArgs e)
-    //{
-    //    int i = 0;
-    //    while (SafeContainerFromIndex(i++) is { } container && container.FindDescendantOrSelf<MotionDragItem>() is { } st)
-    //    {
-    //        if (st != CurrentManipulationItem)
-    //        {
-    //            container.IsHitTestVisible = true;
-    //        }
-    //    }
-    //    CurrentManipulationItem.Opacity = 0;
-    //    e.Handled = true;
-    //    //this.FindDescendant<OrientedStackForContainer>().IsHitTestVisible = true;
-    //}
 }
 partial class MotionDragReorderContainerController(MotionDragContainer self)
 {
@@ -338,10 +113,10 @@ partial class MotionDragReorderContainerController(MotionDragContainer self)
         for (int i = 0; i < itemCount; i++)
         {
             // do not translate the one we are showing on popup
-            if (i == startRemoveIndex)
-            {
-                continue;
-            }
+            //if (i == startRemoveIndex)
+            //{
+            //    continue;
+            //}
             if (self.SafeContainerFromIndex(i) is not { } curItem || curItem.FindDescendantOrSelf<MotionDragItem>() is not { } st)
                 continue;
 
@@ -349,35 +124,42 @@ partial class MotionDragReorderContainerController(MotionDragContainer self)
 
 
             Point translationAmount = default;
-            if (i > 0 && i > startRemoveIndex)
-                if (self.SafeContainerFromIndex(i - 1) is { } prevItem)
-                {
-                    var d = curItem.TransformToVisual(prevItem).TransformPoint(default);
-                    translationAmount = translationAmount.Subtract(d);
-                }
-            positionsremoved[i] = TranAt(position) + TranAt(translationAmount);
-            if (i >= startShiftIndex)
-                translationAmount = translationAmount.Add(shift);
-            positions[i] = TranAt(position) + TranAt(translationAmount);
+            //if (i > 0 && i > startRemoveIndex)
+            //    if (self.SafeContainerFromIndex(i - 1) is { } prevItem)
+            //    {
+            //        var d = curItem.TransformToVisual(prevItem).TransformPoint(default);
+            //        translationAmount = translationAmount.Subtract(d);
+            //    }
+            positions[i] = positionsremoved[i] = TranAt(position) + TranAt(translationAmount);
+            // positions[i] = TranAt(position) + TranAt(translationAmount);
+        }
+        if (self.SafeContainerFromIndex(itemCount - 1) is { } lastItem)
+        {
+            positions[itemCount] = positions[itemCount - 1] +
+                    (orientation is Orientation.Horizontal ? lastItem.ActualSize.X : lastItem.ActualSize.Y);
+            positionsremoved[itemCount] = positionsremoved[itemCount - 1] +
+                (orientation is Orientation.Horizontal ? lastItem.ActualSize.X : lastItem.ActualSize.Y);
+        }
+        // iterate backwards so that we can read the previous value
+        for (int i = itemCount; i > startRemoveIndex; i--)
+        {
+            positions[i] -= positions[i] - positions[i - 1];
+            positionsremoved[i] -= positionsremoved[i] - positionsremoved[i - 1];
+        }
+        for (int i = startShiftIndex; i < positions.Length; i++)
+        {
+            positions[i] += shiftAmount;
+        }
+        for (int i = 0; i < itemCount; i++)
+        {
+            if (i == startRemoveIndex)
+                // do not play animation for the item we are dragging
+                continue;
+            if (self.SafeContainerFromIndex(i) is not { } curItem || curItem.FindDescendantOrSelf<MotionDragItem>() is not { } st)
+                continue;
+            var position = curItem.TransformToVisual(self.ItemPlace).TransformPoint(default);
+            var translationAmount = PointAt(positions[i]).Subtract(position);
             st.TemporaryAnimateTranslation(translationAmount.X, translationAmount.Y);
-            if (i == itemCount - 1)
-            {
-                positions[i + 1] = positions[i] +
-                    (orientation is Orientation.Horizontal ? curItem.ActualSize.X : curItem.ActualSize.Y);
-                positionsremoved[i + 1] = positionsremoved[i] +
-                    (orientation is Orientation.Horizontal ? curItem.ActualSize.X : curItem.ActualSize.Y);
-            }
-            if (i == startRemoveIndex + 1)
-            {
-                positionsremoved[i - 1] = positionsremoved[i];
-                positions[i - 1] = positions[i];
-            }
-            else if (i == startRemoveIndex + 2)
-            {
-                positionsremoved[i - 1] = positionsremoved[i];
-                positions[i - 1] = positions[i];
-            }
-
         }
     }
     public void Reset()
@@ -398,22 +180,37 @@ partial class MotionDragReorderContainerController(MotionDragContainer self)
         //    Debugger.Break();
         //}
         if (positionsremoved is null) UpdateAnimated();
+        SelfNote.DebugBreakOnShift();
         var pos = self.ReorderOrientation is Orientation.Vertical ? posY : posX;
         var idx = Array.BinarySearch(positionsremoved, pos);
         if (idx < 0)
         {
             idx = ~idx;
         }
-        //
-        if (idx >= 1 && idx < positionsremoved.Length)
+        int clampedIdx = idx >= positionsremoved.Length ? positionsremoved.Length - 1 : idx;
+        if (idx > 0 && pos < positionsremoved[clampedIdx])
         {
-            if (pos <= (positionsremoved[idx - 1] + positionsremoved[idx]) / 2)
+            clampedIdx--;
+            idx = clampedIdx;
+        }
+        if (clampedIdx > 0 && positionsremoved[clampedIdx] == positionsremoved[clampedIdx - 1])
+        {
+            clampedIdx--;
+            idx = clampedIdx;
+        if (idx >= 1 && idx + 1 < positionsremoved.Length)
+        {
+            if (pos >= (positionsremoved[idx] + positionsremoved[idx + 1]) / 2)
             {
-                idx--;
-                if (idx == startRemoveIndex + 2)
-                    idx--;
+                idx++;
             }
-            else if (idx == startRemoveIndex + 3) idx--;
+            }
+        }
+        if (idx == startRemoveIndex + 2)
+        {
+            if (pos < (positionsremoved[idx] + positionsremoved[idx + 1]) / 2)
+                idx--;
+            //if (pos <= (positionsremoved[idx + 1] + positionsremoved[idx + 2]) / 2)
+            //    idx--;
         }
         if (idx >= positionsremoved.Length) idx = positionsremoved.Length;
         return idx;

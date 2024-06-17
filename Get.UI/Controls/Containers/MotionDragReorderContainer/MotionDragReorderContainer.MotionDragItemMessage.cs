@@ -73,7 +73,6 @@ partial class MotionDragContainer
         {
             var mousePos = dp.MousePositionToScreen;
             var window = WinWrapper.Windowing.Window.FromLocation((int)mousePos.X, (int)mousePos.Y);
-            //if (WinWrapper.Input.Keyboard.IsShiftDown) Debugger.Break();
             if (window.Class.Name is
 #if WINDOWS_UWP
                 "Xaml_WindowedPopupClass"
@@ -118,10 +117,8 @@ partial class MotionDragContainer
             var eleVisual = ElementCompositionPreview.GetElementVisual(ele);
             eleVisual.IsVisible = true;
         }
-        //var window = WinWrapper.Windowing.Window.ActiveWindow;
-        //window.SetTopMost();
         Popup.IsOpen = false;
-        //window.Activate();
+
         if (dropManager.ShouldItemBeRemovedFromHost)
         {
             var itemSource = ItemsSource;
@@ -146,7 +143,6 @@ partial class MotionDragContainer
             }
         }
         AnimationController.Reset();
-
         //var hwnd = Popup.XamlRoot.ContentIslandEnvironment.AppWindowId;
         //System.Drawing.Point pt = default;
         //_ = PInvoke.MapWindowPoints(new((nint)hwnd.Value), default, &pt, 1);
