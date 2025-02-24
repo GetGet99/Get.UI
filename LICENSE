@@ -1,7 +1,7 @@
 Copyright (c) 2025 GetGet99
 
 ## Definition  
-For the purposes of this license, **"the Software"** refers to the compiled NuGet package distributed via NuGet.org and any associated materials provided in this repository. The source code in this repository is made available **for informational purposes only** and is not licensed for modification or redistribution.  
+For the purposes of this license, **"the Software"** refers to the compiled NuGet package distributed via NuGet.org. The source code in this repository is made available **for informational purposes only** and is not licensed for modification or redistribution.  
 
 ## Usage Rights  
 - You may freely use the **NuGet package** in any personal or commercial project.  
