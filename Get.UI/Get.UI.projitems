@@ -17,7 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\Tabbed\TabbedWindowModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)applicationmodel\toomanytabs\Split.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationModel\TooManyTabs\TooManyTabsWindowModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)controls\containers\ISelectableContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlsResources.xaml.cs">
       <DependentUpon>ControlsResources.xaml</DependentUpon>
     </Compile>
